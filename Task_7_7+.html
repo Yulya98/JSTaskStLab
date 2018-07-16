@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="Scripts/Task_7_7+.js"></script>
+</head>
+<body onload="init()">
+<br><label>Task 7 and 7+:</label></br>
+<br>
+<input type="text" id="firstNum" value="Enter the first number">
+<input type="text" id="secondNum" value="Enter the second number">
+<input type="text" id="result" value="Result">
+</br>
+<br>
+<form name="f4">
+    <select name="town" id="s5">
+        <option value="plus" >+</option>
+        <option value="minus">-</option>
+        <option value="composition">*</option>
+        <option value="division">/</option>
+        <option value="exponentiation">^</option>
+    </select>
+    <input type="button" onclick="calculator.selectOperation()" value="Call built-in function">
+    <select name="town" id="s7">
+    </select>
+    <input type="button" onclick="calculator.callFunction(new Array(document.getElementById('s7').value))" value="Call custom function">
+</form>
+</br>
+<form name="f4">
+
+</form>
+<br><label>Enter the function by template: nameOfFunction obj return obj[1]?obj[2];. Indexes are necessarily 1 and 2:</label></br>
+<br>
+<form>
+    <input type="text" id="newFunction">
+    <input type="button" onclick="calculator.definitionFunction(document.getElementById('newFunction').value.split(' '),true)" value="Definition new function">
+</form>
+</br>
+</body>
+</html>
