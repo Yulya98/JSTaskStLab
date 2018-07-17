@@ -4,7 +4,6 @@ var cacheValue ={};
 var calculator = {
 
     callErrorFunction: function(){
-        debugger;
         if(!document.getElementById("firstNum").value.match(/^\d+$/)){
             document.getElementById("firstNum").value = "Incorrect data";
             if(!document.getElementById("secondNum").value.match(/^\d+$/))
@@ -19,7 +18,6 @@ var calculator = {
     },
 
     selectOperation : function () {
-        debugger;
         if(!calculator.callErrorFunction()){
             return false;
         }
@@ -27,7 +25,6 @@ var calculator = {
         var obj ={};
         obj[1] = +document.getElementById("firstNum").value;
         obj[2] =+document.getElementById("secondNum").value;
-        debugger;
         if(selectValue == "plus") {
             obj[0]="add"
             calculator.outputResult(calculator.add(obj));
@@ -79,7 +76,6 @@ var calculator = {
         this.cacheValue = cache;
 
         return function (obj){
-            debugger;
             if(!((obj[0]+obj[1]+obj[2] in this.cacheValue) || (obj[0]+obj[2]+obj[1] in this.cacheValue) && obj[0]=="exponentiation")){
                 this.cacheValue[obj[0]+obj[1]+obj[2]] = f.call(this,obj);
             }
@@ -98,7 +94,6 @@ var calculator = {
         this.cacheFunctions = cacheFunctions;
 
         return function (obj,flag) {
-            debugger;
             if (!(obj[0] in this.cacheFunctions)) {
                 this.cacheFunctions[obj[0]] = f.call(this, obj,flag);
             }
@@ -108,7 +103,6 @@ var calculator = {
     },
 
     definitionFunction : function (obj,flag) {
-        debugger;
         if(flag == true) {
             calculator.addNewOption(obj[0]);
         }
@@ -117,7 +111,6 @@ var calculator = {
     },
 
     addNewOption : function(str){
-        debugger;
         var objSel = document.getElementById("s7");
         objSel.options[objSel.options.length] = new Option(str, str);
     },
@@ -128,7 +121,6 @@ var calculator = {
         }
         var mas1 = calculator.definitionFunction(str,false).split(' ');
         var newFunc = new Function(mas1[0],mas1[1]+" "+mas1[2]);
-        debugger;
         newFunc = calculator.makeCachingValue(newFunc,cacheValue);
         var obj ={};
         obj[0] = str[0];

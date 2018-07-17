@@ -1,8 +1,7 @@
 //#region Point_1
 var objSearchElemMas = {
     getMaxSubSumOn : function (arr) {
-        var outArr= [];
-        var sum = 0, maxSum = 0;
+        var outArr= [], sum = 0, maxSum = 0;
         for (var r = 0; r < arr.length; ++r) {
             sum += +arr[r];
             if (sum > maxSum)
@@ -15,8 +14,7 @@ var objSearchElemMas = {
     },
 
     getMaxSubSumSquareOn_2 : function (arr) {
-        var outArr= [];
-        var maxSum = 0;
+        var outArr= [], maxSum = 0;
         for (var i = 0; i < arr.length; i++) {
             var sum = 0;
             for (var j = i; j < arr.length; j++) {
@@ -49,10 +47,7 @@ var objSearchElemMas = {
 
 
     searchAscendingSequenceMas : function (arr) {
-        var outputMas = [];
-        var count;
-        var countArr = [];
-        debugger;
+        var outputMas = [], count,countArr = [];
         for (var i = 0; i < arr.length; i++) {
             count = 0;
             for (var j = i + 1; j < arr.length; j++) {
@@ -69,8 +64,7 @@ var objSearchElemMas = {
                 }
             }
         }
-        var maxValue = Math.max.apply(null, countArr);
-        var index = countArr.indexOf(maxValue);
+        var maxValue = Math.max.apply(null, countArr), index = countArr.indexOf(maxValue);
         for (var i = index, j=0; i <= index + maxValue; i++,j++) {
             outputMas[j] = arr[i];
         }
@@ -83,8 +77,7 @@ var objSearchElemMas = {
             return false;
         }
         var initialMas = document.getElementById('initialMasForSearch').value.split(' ').map(x => +x);
-        var outputMas = [];
-        var selectItem = document.getElementById('s3').value;
+        var outputMas = [],selectItem = document.getElementById('s3').value;
         if (selectItem == "sumOfElemMasIsMax_O(n)") {
             outputMas = objSearchElemMas.getMaxSubSumOn(initialMas, "Sum");
             objSearchElemMas.outputMas(outputMas, "Sum");
@@ -104,7 +97,6 @@ var objSearchElemMas = {
     },
 
     outputMas :  function (arr, str) {
-        debugger;
         document.getElementById('initialMasForSearch').value = str+ ": ";
         for(var i=0;i<arr.length;i++){
             document.getElementById('initialMasForSearch').value +=arr[i] + " ";
@@ -125,7 +117,6 @@ var dateFormatter = {
             dateFormatter.outputDate(dateFormatter.parseFunctionReturnStr("DDMMYYYY", "YYYYMMDD"));
         }
         if (selectValue == "simpleStrToDateObject") {
-            debugger;
             dateFormatter.outputDate(dateFormatter.parseFunctionReturnStr("YYYYMMDD", "YYYYMMDD"));
         }
         if (selectValue == "simpleStrToDateObjectHyphenated") {
@@ -143,29 +134,26 @@ var dateFormatter = {
     },
 
     parseFunctionReturnStr : function (inputStr, regExp, regExp_2) {
-        var date;
-        debugger;
-        var initialDate = document.getElementById("date").value;
+        var date , initialDate = document.getElementById("date").value,masValueForBuildDate = [];
+        var locale = "en-us";
         if (inputStr == "DDMMYYYY" && regExp == "YY-MM-DD" && typeof regExp_2 == "undefined") {
             return initialDate.replace(/([0-9]{2})([0-9]{2})([0-9]{4})/, '$1-$2-$3');
         }
         if (inputStr == "DDMMYYYY" && regExp == "YYYYMMDD" && typeof regExp_2 == "undefined") {
-            var masValueForBuildDate = initialDate.replace(/([0-9]{2})([0-9]{2})([0-9]{4})/, '$1,$2,$3').split(',').map(x => +x);
+            masValueForBuildDate = initialDate.replace(/([0-9]{2})([0-9]{2})([0-9]{4})/, '$1,$2,$3').split(',').map(x => +x);
             date = new Date(masValueForBuildDate[2], masValueForBuildDate[1] - 1, masValueForBuildDate[0]);
-            var locale = "en-us";
             return date.getDate() + " " + date.toLocaleString(locale, {month: "long"}) + " " + date.getFullYear();
         }
         if (inputStr == "YYYYMMDD" && regExp == "YYYYMMDD" && typeof regExp_2 == "undefined") {
-            var masValueForBuildDate = initialDate.replace(/([0-9]{4})([0-9]{2})([0-9]{2})/, '$1,$2,$3').split(',').map(x => +x);
+            masValueForBuildDate = initialDate.replace(/([0-9]{4})([0-9]{2})([0-9]{2})/, '$1,$2,$3').split(',').map(x => +x);
             date = new Date(masValueForBuildDate[0], masValueForBuildDate[1] - 1, masValueForBuildDate[2]);
-            var locale = "en-us";
             return date.getDate() + " " + date.toLocaleString(locale, {month: "long"}) + " " + date.getFullYear();
         }
         if (inputStr == "YYYYMMDD" && regExp == "YYYYMMDD" && regExp_2 == "MM-DD-YYYY") {
             return initialDate.replace(/([0-9]{4})([0-9]{2})([0-9]{2})/, '$2-$3-$1');
         }
         if (inputStr == "YYYY-MM-DD" && regExp == "YYYY-MM-DD" && typeof regExp_2 == "undefined") {
-            var masValueForBuildDate = initialDate.replace(/([0-9]{4})-([0-9]{2})-([0-9]{2})/, '$1,$2,$3').split(',').map(x => +x);
+            masValueForBuildDate = initialDate.replace(/([0-9]{4})-([0-9]{2})-([0-9]{2})/, '$1,$2,$3').split(',').map(x => +x);
             var b = new Date(masValueForBuildDate[0], masValueForBuildDate[1] - 1, masValueForBuildDate[2]).getTime();
             var diff = Math.floor(Date.now() - b);
             return Math.floor(diff / (1000 * 60 * 60 * 24) / 31 / 12) + " years ago";
@@ -175,13 +163,12 @@ var dateFormatter = {
             return date;
         }
         if (inputStr == "DateToMS") {
-            var masValueForBuildDate = initialDate.replace(/([0-9]{4})-([0-9]{2})-([0-9]{2})/, '$1,$2,$3').split(',').map(x => +x);
+            masValueForBuildDate = initialDate.replace(/([0-9]{4})-([0-9]{2})-([0-9]{2})/, '$1,$2,$3').split(',').map(x => +x);
             date = new Date(masValueForBuildDate[0], masValueForBuildDate[1] - 1, masValueForBuildDate[2]).getTime();
             return date;
         }
     },
     outputDate : function(date) {
-        debugger;
         document.getElementById("date").value ="";
         document.getElementById("date").value = date;
     }
@@ -203,7 +190,6 @@ var changeTextFormatter = function (str,countRows, countCharInStr) {
         return false
     }
     var textareaObj = document.getElementById("test");
-    debugger;
     var selectValue = document.getElementById('s6').value;
     if(selectValue =="charWrap"){
         str = outputText(str.match(/(\w{1})/g).join('\n'));
@@ -230,14 +216,12 @@ var changeTextFormatter = function (str,countRows, countCharInStr) {
             str = outputText(str.join('\n'));
         }
     }
-    debugger;
     if(countCharInStr != undefined && countCharInStr!=""){
         outputText(str.split(/\n/mg).map(function (e) {return  e.substr(0, countCharInStr);}).join('\n'));
     }
 }
 
 var outputText = function (str) {
-    debugger;
     document.getElementById("test").value ="";
     document.getElementById("test").value = str;
     return str;
@@ -248,7 +232,6 @@ var outputText = function (str) {
 var calculator = {
 
     selectOperation : function () {
-        debugger;
         var firstNum =document.getElementById("firstNum").value;
         var secondNum =document.getElementById("secondNum").value;
         if(!firstNum.match(/^\d+$/)){
@@ -298,7 +281,6 @@ var calculator = {
     },
 
     outputResult: function (result) {
-        debugger;
         document.getElementById("result").value = "";
         document.getElementById("result").value = Math.round(result*10000)/10000;
     }
@@ -340,10 +322,11 @@ var objSortMas = {
     },
 
     bubbleSort : function (arr) {
+        var temp
         for(var i =0;i<arr.length;i++){
             for(var j = i+1;j<arr.length;j++){
                 if(arr[i]> arr[j]){
-                    var temp = arr[i];
+                    temp = arr[i];
                     arr[i] = arr[j];
                     arr[j] = temp;
                 }
@@ -357,10 +340,7 @@ var objSortMas = {
             return arr;
         }
 
-        var pivot = arr[0];
-
-        var left = [];
-        var right = [];
+        var pivot = arr[0], left = [], right = [];
 
         for (var i = 1; i < arr.length; i++) {
             arr[i] < pivot ? left.push(arr[i]) : right.push(arr[i]);
@@ -408,7 +388,6 @@ var objSortMas = {
 
 var binaryOperations = {
     convertToBin: function (num) {
-        debugger;
         var out = [], bit = 1;
         while (num >= bit) {
             if(num>0)
@@ -446,7 +425,6 @@ var binaryOperations = {
     },
 
     outputMas : function (num) {
-        debugger;
         document.getElementById('numToConvert').value = "";
         for(var i in num)
             document.getElementById('numToConvert').value += num[i];
