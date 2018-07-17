@@ -1,10 +1,14 @@
+
+"use strict";
+
 //#region Point_1
-var objSearchElemMas = {
-    getMaxSubSumOn : function (arr) {
-        var outArr= [];
-        var sum = 0, maxSum = 0;
-        for (var r = 0; r < arr.length; ++r) {
-            sum += +arr[r];
+let objSearchElemMas = {
+
+    getMaxSubSumOn(arr) {
+        let outArr= [];
+        let sum = 0, maxSum = 0;
+        for (let value of arr) {
+            sum += +value;
             if (sum > maxSum)
                 maxSum = sum;
             if (sum < 0)
@@ -14,12 +18,12 @@ var objSearchElemMas = {
         return outArr;
     },
 
-    getMaxSubSumSquareOn_2 : function (arr) {
-        var outArr= [];
-        var maxSum = 0;
-        for (var i = 0; i < arr.length; i++) {
-            var sum = 0;
-            for (var j = i; j < arr.length; j++) {
+    getMaxSubSumSquareOn_2(arr) {
+        let outArr= [];
+        let maxSum = 0;
+        for (let i = 0; i < arr.length; i++) {
+            let sum = 0;
+            for (let j = i; j < arr.length; j++) {
                 sum += +arr[j];
                 if (sum > maxSum)
                     maxSum = sum;
@@ -29,8 +33,8 @@ var objSearchElemMas = {
         return outArr
     },
 
-    searchMaxMinMediumElemMas : function (arr) {
-        var masMinMaxMediumElemMas = [], minEl,maxEl,mediumEl;
+    searchMaxMinMediumElemMas (arr) {
+        let masMinMaxMediumElemMas = [], minEl,maxEl,mediumEl;
         arr = objSortMas.quickSort(arr);
         minEl = arr[0];
         maxEl = arr[arr.length-1];
@@ -48,14 +52,13 @@ var objSearchElemMas = {
 
 
 
-    searchAscendingSequenceMas : function (arr) {
-        var outputMas = [];
-        var count;
-        var countArr = [];
-        debugger;
-        for (var i = 0; i < arr.length; i++) {
+    searchAscendingSequenceMas(arr) {
+        let outputMas = [];
+        let count;
+        let countArr = [];
+        for (let i = 0; i < arr.length; i++) {
             count = 0;
-            for (var j = i + 1; j < arr.length; j++) {
+            for (let j = i + 1; j < arr.length; j++) {
                 if (arr[j - 1] < arr[j]) {
                     count++;
                     if (arr[j] == arr.length - 1) {
@@ -69,22 +72,22 @@ var objSearchElemMas = {
                 }
             }
         }
-        var maxValue = Math.max.apply(null, countArr);
-        var index = countArr.indexOf(maxValue);
-        for (var i = index, j=0; i <= index + maxValue; i++,j++) {
+        const maxValue = Math.max.apply(null, countArr);
+        const index = countArr.indexOf(maxValue);
+        for (let i = index, j=0; i <= index + maxValue; i++,j++) {
             outputMas[j] = arr[i];
         }
         return outputMas;
     },
 
-    selectFunctionSearch : function () {
+    selectFunctionSearch() {
         if(!document.getElementById('initialMasForSearch').value.match(/[0-9\s]+/)) {
             document.getElementById('initialMasForSearch').value = "Incorrect Data";
             return false;
         }
-        var initialMas = document.getElementById('initialMasForSearch').value.split(' ').map(x => +x);
-        var outputMas = [];
-        var selectItem = document.getElementById('s3').value;
+        let initialMas = document.getElementById('initialMasForSearch').value.split(' ').map(x => +x);
+        let outputMas = [];
+        let selectItem = document.getElementById('s3').value;
         if (selectItem == "sumOfElemMasIsMax_O(n)") {
             outputMas = objSearchElemMas.getMaxSubSumOn(initialMas, "Sum");
             objSearchElemMas.outputMas(outputMas, "Sum");
@@ -103,21 +106,20 @@ var objSearchElemMas = {
         }
     },
 
-    outputMas :  function (arr, str) {
-        debugger;
+    outputMas(arr, str) {
         document.getElementById('initialMasForSearch').value = str+ ": ";
-        for(var i=0;i<arr.length;i++){
-            document.getElementById('initialMasForSearch').value +=arr[i] + " ";
+        for(let value of arr){
+            document.getElementById('initialMasForSearch').value +=value + " ";
         }
     }
 };
 //#endregion
 
 //#region Point_2
-var dateFormatter = {
+let dateFormatter = {
 
-    selectParseTemplate : function () {
-        var selectValue = document.getElementById('s1').value;
+    selectParseTemplate() {
+        let selectValue = document.getElementById('s1').value;
         if (selectValue == "simpleStr") {
             dateFormatter.outputDate(dateFormatter.parseFunctionReturnStr("DDMMYYYY", "YY-MM-DD"));
         }
@@ -125,7 +127,6 @@ var dateFormatter = {
             dateFormatter.outputDate(dateFormatter.parseFunctionReturnStr("DDMMYYYY", "YYYYMMDD"));
         }
         if (selectValue == "simpleStrToDateObject") {
-            debugger;
             dateFormatter.outputDate(dateFormatter.parseFunctionReturnStr("YYYYMMDD", "YYYYMMDD"));
         }
         if (selectValue == "simpleStrToDateObjectHyphenated") {
@@ -142,32 +143,29 @@ var dateFormatter = {
         }
     },
 
-    parseFunctionReturnStr : function (inputStr, regExp, regExp_2) {
-        var date;
-        debugger;
-        var initialDate = document.getElementById("date").value;
+    parseFunctionReturnStr(inputStr, regExp, regExp_2) {
+        let date,initialDate = document.getElementById("date").value, masValueForBuildDate = [];
+        const locale = "en-us";
         if (inputStr == "DDMMYYYY" && regExp == "YY-MM-DD" && typeof regExp_2 == "undefined") {
             return initialDate.replace(/([0-9]{2})([0-9]{2})([0-9]{4})/, '$1-$2-$3');
         }
         if (inputStr == "DDMMYYYY" && regExp == "YYYYMMDD" && typeof regExp_2 == "undefined") {
-            var masValueForBuildDate = initialDate.replace(/([0-9]{2})([0-9]{2})([0-9]{4})/, '$1,$2,$3').split(',').map(x => +x);
+            masValueForBuildDate = initialDate.replace(/([0-9]{2})([0-9]{2})([0-9]{4})/, '$1,$2,$3').split(',').map(x => +x);
             date = new Date(masValueForBuildDate[2], masValueForBuildDate[1] - 1, masValueForBuildDate[0]);
-            var locale = "en-us";
             return date.getDate() + " " + date.toLocaleString(locale, {month: "long"}) + " " + date.getFullYear();
         }
         if (inputStr == "YYYYMMDD" && regExp == "YYYYMMDD" && typeof regExp_2 == "undefined") {
-            var masValueForBuildDate = initialDate.replace(/([0-9]{4})([0-9]{2})([0-9]{2})/, '$1,$2,$3').split(',').map(x => +x);
+            masValueForBuildDate = initialDate.replace(/([0-9]{4})([0-9]{2})([0-9]{2})/, '$1,$2,$3').split(',').map(x => +x);
             date = new Date(masValueForBuildDate[0], masValueForBuildDate[1] - 1, masValueForBuildDate[2]);
-            var locale = "en-us";
             return date.getDate() + " " + date.toLocaleString(locale, {month: "long"}) + " " + date.getFullYear();
         }
         if (inputStr == "YYYYMMDD" && regExp == "YYYYMMDD" && regExp_2 == "MM-DD-YYYY") {
             return initialDate.replace(/([0-9]{4})([0-9]{2})([0-9]{2})/, '$2-$3-$1');
         }
         if (inputStr == "YYYY-MM-DD" && regExp == "YYYY-MM-DD" && typeof regExp_2 == "undefined") {
-            var masValueForBuildDate = initialDate.replace(/([0-9]{4})-([0-9]{2})-([0-9]{2})/, '$1,$2,$3').split(',').map(x => +x);
-            var b = new Date(masValueForBuildDate[0], masValueForBuildDate[1] - 1, masValueForBuildDate[2]).getTime();
-            var diff = Math.floor(Date.now() - b);
+            masValueForBuildDate = initialDate.replace(/([0-9]{4})-([0-9]{2})-([0-9]{2})/, '$1,$2,$3').split(',').map(x => +x);
+            let b = new Date(masValueForBuildDate[0], masValueForBuildDate[1] - 1, masValueForBuildDate[2]).getTime();
+            let diff = Math.floor(Date.now() - b);
             return Math.floor(diff / (1000 * 60 * 60 * 24) / 31 / 12) + " years ago";
         }
         if (inputStr == "MS") {
@@ -175,13 +173,13 @@ var dateFormatter = {
             return date;
         }
         if (inputStr == "DateToMS") {
-            var masValueForBuildDate = initialDate.replace(/([0-9]{4})-([0-9]{2})-([0-9]{2})/, '$1,$2,$3').split(',').map(x => +x);
+            masValueForBuildDate = initialDate.replace(/([0-9]{4})-([0-9]{2})-([0-9]{2})/, '$1,$2,$3').split(',').map(x => +x);
             date = new Date(masValueForBuildDate[0], masValueForBuildDate[1] - 1, masValueForBuildDate[2]).getTime();
             return date;
         }
     },
-    outputDate : function(date) {
-        debugger;
+
+    outputDate(date) {
         document.getElementById("date").value ="";
         document.getElementById("date").value = date;
     }
@@ -190,7 +188,7 @@ var dateFormatter = {
 //#endregion
 
 //#region Point_3
-var changeTextFormatter = function (str,countRows, countCharInStr) {
+let changeTextFormatter =  (str,countRows, countCharInStr) =>{
     if(!countRows.match(/^\d+$/)) {
         document.getElementById('maxRows').value = "Incorrect data";
         if(!countCharInStr.match(/^\d+$/)) {
@@ -202,9 +200,8 @@ var changeTextFormatter = function (str,countRows, countCharInStr) {
         document.getElementById('maxColumns').value = "Incorrect data";
         return false
     }
-    var textareaObj = document.getElementById("test");
-    debugger;
-    var selectValue = document.getElementById('s6').value;
+    let textareaObj = document.getElementById("test");
+    let selectValue = document.getElementById('s6').value;
     if(selectValue =="charWrap"){
         str = outputText(str.match(/(\w{1})/g).join('\n'));
     }
@@ -219,9 +216,9 @@ var changeTextFormatter = function (str,countRows, countCharInStr) {
     }
     if(countRows !=undefined && countRows!=""){
         str = str.split('\n');
-        var outputMas = [];
+        let outputMas = [];
         if(str.length-countRows>0) {
-            for (var i = 0; i < countRows; i++) {
+            for (let i = 0; i < countRows; i++) {
                 outputMas[i] = str[i];
             }
             str = outputText(outputMas.join('\n'));
@@ -230,14 +227,12 @@ var changeTextFormatter = function (str,countRows, countCharInStr) {
             str = outputText(str.join('\n'));
         }
     }
-    debugger;
     if(countCharInStr != undefined && countCharInStr!=""){
-        outputText(str.split(/\n/mg).map(function (e) {return  e.substr(0, countCharInStr);}).join('\n'));
+        outputText(str.split(/\n/mg).map(x => x.substr(0, countCharInStr)).join('\n'));
     }
 }
 
-var outputText = function (str) {
-    debugger;
+let outputText = (str) => {
     document.getElementById("test").value ="";
     document.getElementById("test").value = str;
     return str;
@@ -245,12 +240,11 @@ var outputText = function (str) {
 //#endregion
 
 //#region Point_4
-var calculator = {
+let calculator = {
 
-    selectOperation : function () {
-        debugger;
-        var firstNum =document.getElementById("firstNum").value;
-        var secondNum =document.getElementById("secondNum").value;
+    selectOperation() {
+        let firstNum =document.getElementById("firstNum").value;
+        let secondNum =document.getElementById("secondNum").value;
         if(!firstNum.match(/^\d+$/)){
             document.getElementById("firstNum").value = "Incorrect data";
             if(!secondNum.match(/^\d+$/)) {
@@ -264,7 +258,7 @@ var calculator = {
         }
         firstNum =+document.getElementById("firstNum").value;
         secondNum =document.getElementById("secondNum").value;
-        var selectValue = document.getElementById('s5').value;
+        let selectValue = document.getElementById('s5').value;
         if(selectValue == "plus")
             calculator.outputResult(calculator.add(firstNum, secondNum));
         if(selectValue =="minus")
@@ -277,28 +271,27 @@ var calculator = {
             calculator.outputResult(calculator.exponentiation(firstNum, secondNum));
     },
 
-    add : function (a,b) {
+    add (a,b) {
         return a+b;
     },
 
-    minus : function(a,b){
+    minus (a,b){
         return a-b;
     },
 
-    composition: function(a,b){
+    composition(a,b){
         return a*b;
     },
 
-    division : function(a,b){
+    division(a,b){
         return a/b;
     },
 
-    exponentiation: function(a,b){
+    exponentiation(a,b){
         return Math.pow(a,b);
     },
 
-    outputResult: function (result) {
-        debugger;
+    outputResult(result) {
         document.getElementById("result").value = "";
         document.getElementById("result").value = Math.round(result*10000)/10000;
     }
@@ -306,11 +299,11 @@ var calculator = {
 //#endregion
 
 //#region Point_5
-var objSortMas = {
-    insertionSort : function (arr) {
-        for (var i = 0; i < arr.length; i++)
+let objSortMas = {
+    insertionSort(arr) {
+        for (let i = 0; i < arr.length; i++)
         {
-            var v = arr[ i ], j = i-1;
+            let v = arr[ i ], j = i-1;
             while (j >= 0 && arr[j] > v)
             {
                 arr[j+1] = arr[j]; j--;
@@ -320,30 +313,31 @@ var objSortMas = {
         return arr;
     },
 
-    selectionSort : function (arr) {
-        for(var i=0;i<arr.length;i++)
+    selectionSort(arr) {
+        let temp;
+        for(let i=0;i<arr.length;i++)
         {
-            var iMin = i;
-            for(var j = i+1;j<arr.length;j++)
+            let iMin = i;
+            for(let j = i+1;j<arr.length;j++)
             {
                 if(arr[j]<arr[iMin])
                     iMin = j;
             }
             if(iMin != i)
             {
-                var c = arr[iMin];
+                temp = arr[iMin];
                 arr[iMin] = arr[i];
-                arr[i] = c;
+                arr[i] = temp;
             }
         }
         return arr;
     },
 
-    bubbleSort : function (arr) {
-        for(var i =0;i<arr.length;i++){
-            for(var j = i+1;j<arr.length;j++){
+    bubbleSort(arr) {
+        for(let i =0;i<arr.length;i++){
+            for(let j = i+1;j<arr.length;j++){
                 if(arr[i]> arr[j]){
-                    var temp = arr[i];
+                    let temp = arr[i];
                     arr[i] = arr[j];
                     arr[j] = temp;
                 }
@@ -352,31 +346,26 @@ var objSortMas = {
         return arr;
     },
 
-    quickSort : function (arr) {
+    quickSort(arr) {
         if (arr.length <= 1) {
             return arr;
         }
 
-        var pivot = arr[0];
+        let pivot = arr[0], left = [], right = [];
 
-        var left = [];
-        var right = [];
-
-        for (var i = 1; i < arr.length; i++) {
+        for (let i = 1; i < arr.length; i++) {
             arr[i] < pivot ? left.push(arr[i]) : right.push(arr[i]);
         }
         return objSortMas.quickSort(left).concat(pivot, objSortMas.quickSort(right));
     },
 
-    selectFunctionSort : function () {
+    selectFunctionSort() {
 
         if(!document.getElementById('initialMasForSort').value.match(/[0-9\s]+/)) {
             document.getElementById('initialMasForSort').value = "Incorrect Data";
             return false;
         }
-        var selectValue=document.getElementById('s2').value;
-        var initialMas = document.getElementById("initialMasForSort").value.split(' ').map(function (value) { return +value; });
-        var sortMas;
+        let selectValue=document.getElementById('s2').value,initialMas = document.getElementById("initialMasForSort").value.split(' ').map(x=>+x),sortMas;
         if(initialMas !=undefined) {
             if (selectValue == "quickSort") {
                 sortMas = objSortMas.quickSort(initialMas);
@@ -394,11 +383,11 @@ var objSortMas = {
         }
     },
 
-    outputSortMas : function (arr) {
+    outputSortMas(arr) {
         document.getElementById('initialMasForSort').value = "";
-        arr.forEach(function (element) {
-            document.getElementById('initialMasForSort').value +=element + " ";
-        });
+        for(let value of arr) {
+            document.getElementById('initialMasForSort').value +=value + " ";
+        };
     }
 };
 
@@ -406,10 +395,9 @@ var objSortMas = {
 
 //#region Point_6
 
-var binaryOperations = {
-    convertToBin: function (num) {
-        debugger;
-        var out = [], bit = 1;
+let binaryOperations = {
+    convertToBin(num) {
+        let out = [], bit = 1;
         while (num >= bit) {
             if(num>0)
                 out.push(num & bit ? 1 : 0);
@@ -420,23 +408,23 @@ var binaryOperations = {
         return out;
     },
 
-    convertToDec: function (num) {
-        var out =0,  bit = 1;
-        for(var i=0;i<num.length;i++){
-            out+=num[i] == "1" ? bit :0;
+    convertToDec(num) {
+        let out =0,  bit = 1;
+        for(let value of num){
+            out+=value == "1" ? bit :0;
             bit<<=1;
         }
-        var masValue = [];
+        let masValue = [];
         masValue[0] = out;
         return masValue;
     },
 
-    selectOperation : function (num) {
+    selectOperation(num) {
         if(!num.match(/^\d+$/)){
             document.getElementById('numToConvert').value = "Incorrect data";
             return false;
         }
-        var selectValue = document.getElementById('s7').value;
+        let selectValue = document.getElementById('s7').value;
         if(selectValue =="convertToBin"){
             binaryOperations.outputMas(binaryOperations.convertToBin(num));
         }
@@ -445,11 +433,10 @@ var binaryOperations = {
         }
     },
 
-    outputMas : function (num) {
-        debugger;
+    outputMas(num) {
         document.getElementById('numToConvert').value = "";
-        for(var i in num)
-            document.getElementById('numToConvert').value += num[i];
+        for(let value of num)
+            document.getElementById('numToConvert').value += value;
     }
 }
 

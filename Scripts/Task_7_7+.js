@@ -1,10 +1,11 @@
+"use strict";
+
 //#region Point_7
-var cacheValue ={};
+let cacheValue ={};
 
-var calculator = {
+let calculator = {
 
-    callErrorFunction: function(){
-        debugger;
+    callErrorFunction(){
         if(!document.getElementById("firstNum").value.match(/^\d+$/)){
             document.getElementById("firstNum").value = "Incorrect data";
             if(!document.getElementById("secondNum").value.match(/^\d+$/))
@@ -18,16 +19,14 @@ var calculator = {
         return true;
     },
 
-    selectOperation : function () {
-        debugger;
+    selectOperation() {
         if(!calculator.callErrorFunction()){
             return false;
         }
-        var selectValue = document.getElementById('s5').value;
-        var obj ={};
+        let selectValue = document.getElementById('s5').value;
+        let obj ={};
         obj[1] = +document.getElementById("firstNum").value;
         obj[2] =+document.getElementById("secondNum").value;
-        debugger;
         if(selectValue == "plus") {
             obj[0]="add"
             calculator.outputResult(calculator.add(obj));
@@ -50,55 +49,53 @@ var calculator = {
         }
     },
 
-    add : function (obj) {
+    add(obj) {
         return obj[1]+obj[2];
     },
 
-    minus : function(obj){
+    minus(obj){
         return obj[1]-obj[2];
     },
 
-    composition: function(obj){
+    composition(obj){
         return obj[1]*obj[2];
     },
 
-    division : function(obj){
+    division(obj){
         return obj[1]/obj[2];
     },
 
-    exponentiation: function(obj){
+    exponentiation(obj){
         return Math.pow(obj[1],obj[2]);
     },
 
-    outputResult: function (result) {
+    outputResult(result) {
         document.getElementById("result").value = "";
         document.getElementById("result").value = Math.round(result*10000)/10000;
     },
 
-    makeCachingValue: function (f,cache) {
-        this.cacheValue = cache;
+    makeCachingValue(f,cache) {
+        let cacheValue = cache;
 
         return function (obj){
-            debugger;
-            if(!((obj[0]+obj[1]+obj[2] in this.cacheValue) || (obj[0]+obj[2]+obj[1] in this.cacheValue) && obj[0]=="exponentiation")){
-                this.cacheValue[obj[0]+obj[1]+obj[2]] = f.call(this,obj);
+            if(!((obj[0]+obj[1]+obj[2] in cacheValue) || (obj[0]+obj[2]+obj[1] in cacheValue) && obj[0]=="exponentiation")){
+                cacheValue[obj[0]+obj[1]+obj[2]] = f.call(this,obj);
             }
             if(obj[0] == "exponentiation"){
                 if(!(obj[0]+obj[1]+obj[2] in this.cacheValue)){
-                    this.cacheValue[obj[0]+obj[1]+obj[2]] = f.call(this,obj);
+                    cacheValue[obj[0]+obj[1]+obj[2]] = f.call(this,obj);
                 }
             }
-            return this.cacheValue[obj[0]+obj[1]+obj[2]];
+            return cacheValue[obj[0]+obj[1]+obj[2]];
         };
 
     },
 
-    definitionFunctionCache: function (f,cacheFunctions) {
+    definitionFunctionCache(f,cacheFunctions) {
 
         this.cacheFunctions = cacheFunctions;
 
         return function (obj,flag) {
-            debugger;
             if (!(obj[0] in this.cacheFunctions)) {
                 this.cacheFunctions[obj[0]] = f.call(this, obj,flag);
             }
@@ -107,30 +104,27 @@ var calculator = {
         };
     },
 
-    definitionFunction : function (obj,flag) {
-        debugger;
+    definitionFunction(obj,flag) {
         if(flag == true) {
             calculator.addNewOption(obj[0]);
         }
-        var mas =[obj[1],obj[2],obj[3]];
+        let mas =[obj[1],obj[2],obj[3]];
         return mas.join(' ');
     },
 
-    addNewOption : function(str){
-        debugger;
-        var objSel = document.getElementById("s7");
+    addNewOption(str){
+        let objSel = document.getElementById("s7");
         objSel.options[objSel.options.length] = new Option(str, str);
     },
 
-    callFunction : function (str) {
+    callFunction(str) {
         if(!calculator.callErrorFunction()){
             return false;
         }
-        var mas1 = calculator.definitionFunction(str,false).split(' ');
-        var newFunc = new Function(mas1[0],mas1[1]+" "+mas1[2]);
-        debugger;
+        let mas1 = calculator.definitionFunction(str,false).split(' ');
+        let newFunc = new Function(mas1[0],mas1[1]+" "+mas1[2]);
         newFunc = calculator.makeCachingValue(newFunc,cacheValue);
-        var obj ={};
+        let obj ={};
         obj[0] = str[0];
         obj[1] = +document.getElementById("firstNum").value;
         obj[2] = +document.getElementById("secondNum").value;
@@ -139,7 +133,7 @@ var calculator = {
 };
 
 function init() {
-    var cacheFunction ={};
+    let cacheFunction ={};
     calculator.definitionFunction = calculator.definitionFunctionCache(calculator.definitionFunction,cacheFunction);
     calculator.add = calculator.makeCachingValue(calculator.add, cacheValue);
     calculator.minus = calculator.makeCachingValue(calculator.minus,cacheValue);
