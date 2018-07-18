@@ -1,6 +1,3 @@
-"use strict";
-
-//#region Point_7
 let cacheValue ={};
 
 let calculator = {

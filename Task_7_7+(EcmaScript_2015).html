@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-    <script src="Scripts/Task_7_7+.js"></script>
+    <script src="Scripts/Task_7_7+(ES_2015).js"></script>
 </head>
-<body onload="init()">
+<body onload="calculator.init()">
 <br><label>Task 7 and 7+:</label></br>
 <br>
 <input type="text" id="firstNum" value="Enter the first number">
@@ -34,7 +34,7 @@
 <br>
 <form>
     <input type="text" id="newFunction">
-    <input type="button" onclick="calculator.definitionFunction(document.getElementById('newFunction').value.split(' '),true)" value="Definition new function">
+    <input type="button" onclick="calculator.f(document.getElementById('newFunction').value.split(' '),true)" value="Definition new function">
 </form>
 </br>
 </body>
