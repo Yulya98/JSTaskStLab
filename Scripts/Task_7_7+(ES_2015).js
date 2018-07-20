@@ -4,6 +4,8 @@ var calculator =(function() {
 
     var cacheValue = {};
 
+    var cacheFunction ={};
+
     var callErrorFunction = function(){
         if(!document.getElementById("firstNum").value.match(/^\d+$/)){
             document.getElementById("firstNum").value = "Incorrect data";
@@ -78,6 +80,7 @@ var calculator =(function() {
         this.cacheValue = cache;
 
         return function (obj){
+            debugger;
             if(!((obj[0]+obj[1]+obj[2] in this.cacheValue) || (obj[0]+obj[2]+obj[1] in this.cacheValue) && obj[0]=="exponentiation")){
                 this.cacheValue[obj[0]+obj[1]+obj[2]] = f.call(this,obj);
             }
@@ -146,8 +149,8 @@ var calculator =(function() {
     }
 
     function init() {
-        debugger;
-        var cacheFunction ={};
+        // debugger;
+        // var cacheFunction ={};
         add = makeCachingValue(add, cacheValue);
         minus = makeCachingValue(minus,cacheValue);
         composition = makeCachingValue(composition,cacheValue);

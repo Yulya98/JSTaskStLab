@@ -2,9 +2,14 @@
 "use strict";
 
 //#region Point_1
-let objSearchElemMas = {
+class SearchElemMas {
 
-    getMaxSubSumOn(arr) {
+    constructor(arr){
+        this.arrElem = arr;
+    }
+
+
+    static getMaxSubSumOn(arr) {
         let outArr= [];
         let sum = 0, maxSum = 0;
         for (let value of arr) {
@@ -16,9 +21,9 @@ let objSearchElemMas = {
         }
         outArr[0] = maxSum;
         return outArr;
-    },
+    }
 
-    getMaxSubSumSquareOn_2(arr) {
+    static getMaxSubSumSquareOn_2(arr) {
         let outArr= [];
         let maxSum = 0;
         for (let i = 0; i < arr.length; i++) {
@@ -31,11 +36,11 @@ let objSearchElemMas = {
         }
         outArr[0] = maxSum;
         return outArr
-    },
+    }
 
-    searchMaxMinMediumElemMas (arr) {
+    static searchMaxMinMediumElemMas (arr) {
         let masMinMaxMediumElemMas = [], minEl,maxEl,mediumEl;
-        arr = objSortMas.quickSort(arr);
+        arr = new SortMas().quickSort(arr);
         minEl = arr[0];
         maxEl = arr[arr.length-1];
         if(arr.length%2 ==0){
@@ -48,11 +53,11 @@ let objSearchElemMas = {
         masMinMaxMediumElemMas[1] = maxEl;
         masMinMaxMediumElemMas[2] = mediumEl;
         return masMinMaxMediumElemMas;
-    },
+    }
 
 
 
-    searchAscendingSequenceMas(arr) {
+    static searchAscendingSequenceMas(arr) {
         let outputMas = [];
         let count;
         let countArr = [];
@@ -78,220 +83,233 @@ let objSearchElemMas = {
             outputMas[j] = arr[i];
         }
         return outputMas;
-    },
+    }
 
     selectFunctionSearch() {
-        if(!document.getElementById('initialMasForSearch').value.match(/[0-9\s]+/)) {
-            document.getElementById('initialMasForSearch').value = "Incorrect Data";
+        if(!this.arrElem.value.match(/[0-9\s]+/)) {
+            this.arrElem.value = "Incorrect Data";
             return false;
         }
-        let initialMas = document.getElementById('initialMasForSearch').value.split(' ').map(x => +x);
+        let masFromArr = this.arrElem.value.split(' ').map(x => +x);
         let outputMas = [];
         let selectItem = document.getElementById('s3').value;
         if (selectItem == "sumOfElemMasIsMax_O(n)") {
-            outputMas = objSearchElemMas.getMaxSubSumOn(initialMas, "Sum");
-            objSearchElemMas.outputMas(outputMas, "Sum");
+            outputMas = SearchElemMas.getMaxSubSumOn(masFromArr, "Sum");
+            this.outputMas(outputMas, "Sum");
         }
         if (selectItem == "sumOfElemMasIsMax_O(n^2)") {
-            outputMas = objSearchElemMas.getMaxSubSumSquareOn_2(initialMas);
-            objSearchElemMas.outputMas(outputMas, "Sum");
+            outputMas = SearchElemMas.getMaxSubSumSquareOn_2(masFromArr);
+            this.outputMas(outputMas, "Sum");
         }
         if (selectItem == "searchMaxMinMediumElemMas") {
-            outputMas = objSearchElemMas.searchMaxMinMediumElemMas(initialMas);
-            objSearchElemMas.outputMas(outputMas, "Min, max, medium");
+            outputMas = SearchElemMas.searchMaxMinMediumElemMas(masFromArr);
+            this.outputMas(outputMas, "Min, max, medium");
         }
         if (selectItem == "ascendingSequenceMas") {
-            outputMas = objSearchElemMas.searchAscendingSequenceMas(initialMas);
-            objSearchElemMas.outputMas(outputMas, "Ascending Sequence");
+            outputMas = SearchElemMas.searchAscendingSequenceMas(masFromArr);
+            this.outputMas(outputMas, "Ascending Sequence");
         }
-    },
+    }
 
     outputMas(arr, str) {
-        document.getElementById('initialMasForSearch').value = str+ ": ";
+        this.arrElem.value = str+ ": ";
         for(let value of arr){
-            document.getElementById('initialMasForSearch').value +=value + " ";
+            this.arrElem.value +=value + " ";
         }
     }
 };
 //#endregion
 
 //#region Point_2
-let dateFormatter = {
+class dateFormatter {
+
+    constructor(initialDateElem,selectValue){
+        this.initialDateElem = initialDateElem;
+        this.selectValue = selectValue; //временно
+        // this.formatDate =formatDate; //для того чтобы потом пофиксить магические строки
+    }
 
     selectParseTemplate() {
-        let selectValue = document.getElementById('s1').value;
-        if (selectValue == "simpleStr") {
-            dateFormatter.outputDate(dateFormatter.parseFunctionReturnStr("DDMMYYYY", "YY-MM-DD"));
+        if (this.selectValue == "simpleStr") {
+            this.outputDate(this.parseFunctionReturnStr("DDMMYYYY", "YY-MM-DD"));
         }
-        if (selectValue == "simpleStrMonthToStr") {
-            dateFormatter.outputDate(dateFormatter.parseFunctionReturnStr("DDMMYYYY", "YYYYMMDD"));
+        if (this.selectValue == "simpleStrMonthToStr") {
+            this.outputDate(this.parseFunctionReturnStr("DDMMYYYY", "YYYYMMDD"));
         }
-        if (selectValue == "simpleStrToDateObject") {
-            dateFormatter.outputDate(dateFormatter.parseFunctionReturnStr("YYYYMMDD", "YYYYMMDD"));
+        if (this.selectValue == "simpleStrToDateObject") {
+            this.outputDate(this.parseFunctionReturnStr("YYYYMMDD", "YYYYMMDD"));
         }
-        if (selectValue == "simpleStrToDateObjectHyphenated") {
-            dateFormatter.outputDate(dateFormatter.parseFunctionReturnStr("YYYYMMDD", "YYYYMMDD", "MM-DD-YYYY"));
+        if (this.selectValue == "simpleStrToDateObjectHyphenated") {
+            this.outputDate(this.parseFunctionReturnStr("YYYYMMDD", "YYYYMMDD", "MM-DD-YYYY"));
         }
-        if (selectValue == "fromNow") {
-            dateFormatter.outputDate(dateFormatter.parseFunctionReturnStr("YYYY-MM-DD", "YYYY-MM-DD"));
+        if (this.selectValue == "fromNow") {
+            this.outputDate(this.parseFunctionReturnStr("YYYY-MM-DD", "YYYY-MM-DD"));
         }
-        if (selectValue == "MStoDate") {
-            dateFormatter.outputDate(dateFormatter.parseFunctionReturnStr("MS"));
+        if (this.selectValue == "MStoDate") {
+            this.outputDate(this.parseFunctionReturnStr("MS"));
         }
-        if (selectValue == "DateToMS") {
-            dateFormatter.outputDate(dateFormatter.parseFunctionReturnStr("DateToMS"));
+        if (this.selectValue == "DateToMS") {
+            this.outputDate(this.parseFunctionReturnStr("DateToMS"));
         }
-    },
+    }
 
     parseFunctionReturnStr(inputStr, regExp, regExp_2) {
-        let date,initialDate = document.getElementById("date").value, masValueForBuildDate = [];
+        let date, masValueForBuildDate = [];
         const locale = "en-us";
         if (inputStr == "DDMMYYYY" && regExp == "YY-MM-DD" && typeof regExp_2 == "undefined") {
-            return initialDate.replace(/([0-9]{2})([0-9]{2})([0-9]{4})/, '$1-$2-$3');
+            return this.initialDateElem.value.replace(/([0-9]{2})([0-9]{2})([0-9]{4})/, '$1-$2-$3');
         }
         if (inputStr == "DDMMYYYY" && regExp == "YYYYMMDD" && typeof regExp_2 == "undefined") {
-            masValueForBuildDate = initialDate.replace(/([0-9]{2})([0-9]{2})([0-9]{4})/, '$1,$2,$3').split(',').map(x => +x);
+            masValueForBuildDate = this.initialDateElem.value.replace(/([0-9]{2})([0-9]{2})([0-9]{4})/, '$1,$2,$3').split(',').map(x => +x);
             date = new Date(masValueForBuildDate[2], masValueForBuildDate[1] - 1, masValueForBuildDate[0]);
             return date.getDate() + " " + date.toLocaleString(locale, {month: "long"}) + " " + date.getFullYear();
         }
         if (inputStr == "YYYYMMDD" && regExp == "YYYYMMDD" && typeof regExp_2 == "undefined") {
-            masValueForBuildDate = initialDate.replace(/([0-9]{4})([0-9]{2})([0-9]{2})/, '$1,$2,$3').split(',').map(x => +x);
+            masValueForBuildDate = this.initialDateElem.value.replace(/([0-9]{4})([0-9]{2})([0-9]{2})/, '$1,$2,$3').split(',').map(x => +x);
             date = new Date(masValueForBuildDate[0], masValueForBuildDate[1] - 1, masValueForBuildDate[2]);
             return date.getDate() + " " + date.toLocaleString(locale, {month: "long"}) + " " + date.getFullYear();
         }
         if (inputStr == "YYYYMMDD" && regExp == "YYYYMMDD" && regExp_2 == "MM-DD-YYYY") {
-            return initialDate.replace(/([0-9]{4})([0-9]{2})([0-9]{2})/, '$2-$3-$1');
+            return this.initialDateElem.value.replace(/([0-9]{4})([0-9]{2})([0-9]{2})/, '$2-$3-$1');
         }
         if (inputStr == "YYYY-MM-DD" && regExp == "YYYY-MM-DD" && typeof regExp_2 == "undefined") {
-            masValueForBuildDate = initialDate.replace(/([0-9]{4})-([0-9]{2})-([0-9]{2})/, '$1,$2,$3').split(',').map(x => +x);
-            let b = new Date(masValueForBuildDate[0], masValueForBuildDate[1] - 1, masValueForBuildDate[2]).getTime();
-            let diff = Math.floor(Date.now() - b);
+            masValueForBuildDate = this.initialDateElem.value.replace(/([0-9]{4})-([0-9]{2})-([0-9]{2})/, '$1,$2,$3').split(',').map(x => +x);
+            let initialDate = new Date(masValueForBuildDate[0], masValueForBuildDate[1] - 1, masValueForBuildDate[2]).getTime();
+            let diff = Math.floor(Date.now() - initialDate);
             return Math.floor(diff / (1000 * 60 * 60 * 24) / 31 / 12) + " years ago";
         }
         if (inputStr == "MS") {
-            date = new Date(+initialDate);
+            date = new Date(+this.initialDateElem.value);
             return date;
         }
         if (inputStr == "DateToMS") {
-            masValueForBuildDate = initialDate.replace(/([0-9]{4})-([0-9]{2})-([0-9]{2})/, '$1,$2,$3').split(',').map(x => +x);
+            masValueForBuildDate = this.initialDateElem.value.replace(/([0-9]{4})-([0-9]{2})-([0-9]{2})/, '$1,$2,$3').split(',').map(x => +x);
             date = new Date(masValueForBuildDate[0], masValueForBuildDate[1] - 1, masValueForBuildDate[2]).getTime();
             return date;
         }
-    },
+    }
 
     outputDate(date) {
-        document.getElementById("date").value ="";
-        document.getElementById("date").value = date;
+        this.initialDateElem.value ="";
+        this.initialDateElem.value = date;
     }
 };
 
 //#endregion
 
 //#region Point_3
-let changeTextFormatter =  (str,countRows, countCharInStr) =>{
-    if(!countRows.match(/^\d+$/)) {
-        document.getElementById('maxRows').value = "Incorrect data";
-        if(!countCharInStr.match(/^\d+$/)) {
-            document.getElementById('maxColumns').value = "Incorrect data";
-        }
-        return false;
-    }
-    if(!countCharInStr.match(/^\d+$/)) {
-        document.getElementById('maxColumns').value = "Incorrect data";
-        return false
-    }
-    let textareaObj = document.getElementById("test");
-    let selectValue = document.getElementById('s6').value;
-    if(selectValue =="charWrap"){
-        str = outputText(str.match(/(\w{1})/g).join('\n'));
-    }
-    if(selectValue =="wordWrap"){
-        str = outputText(str.replace(/\s/g, "\n"))
-    }
-    if(selectValue == "sentenceWrap"){
-        str = outputText(str.match(/(\w+.)/g).join('\n'));
-    }
-    if(selectValue=="withoutWrap"){
-        textareaObj.setAttribute('wrap','off');
-    }
-    if(countRows !=undefined && countRows!=""){
-        str = str.split('\n');
-        let outputMas = [];
-        if(str.length-countRows>0) {
-            for (let i = 0; i < countRows; i++) {
-                outputMas[i] = str[i];
-            }
-            str = outputText(outputMas.join('\n'));
-        }
-        else {
-            str = outputText(str.join('\n'));
-        }
-    }
-    if(countCharInStr != undefined && countCharInStr!=""){
-        outputText(str.split(/\n/mg).map(x => x.substr(0, countCharInStr)).join('\n'));
-    }
-}
 
-let outputText = (str) => {
-    document.getElementById("test").value ="";
-    document.getElementById("test").value = str;
-    return str;
-}
+class TextFormatter{
+
+    constructor(maxRows,maxColumns,text,selectValue){
+        this.maxRows = maxRows;
+        this.maxColumns = maxColumns;
+        this.text = text;
+        this.selectValue = selectValue;
+    }
+
+    changeTextFormatter () {
+        if(!this.maxRows.value.match(/^\d+$/)) {
+            this.maxRows.value = "Incorrect data";
+            if(!this.maxColumns.value.match(/^\d+$/)) {
+                this.maxColumns.value = "Incorrect data";
+            }
+            return false;
+        }
+        if(!this.maxColumns.value.match(/^\d+$/)) {
+            this.maxColumns.value = "Incorrect data";
+            return false
+        }
+        if(this.selectValue =="charWrap"){
+            this.text.value = this.outputText(this.text.value.match(/(\w{1})/g).join('\n'));
+        }
+        if(this.selectValue =="wordWrap"){
+            this.text.value = this.outputText(this.text.value.replace(/\s/g, "\n"))
+        }
+        if(this.selectValue == "sentenceWrap"){
+            this.text.value = this.outputText(this.text.value.match(/(\w+.)/g).join('\n'));
+        }
+        if(this.selectValue == "withoutWrap"){
+            this.text.setAttribute('wrap','off');
+        }
+        let str;
+        if(this.maxRows.value !=undefined && this.maxRows.value!=""){
+            str = this.text.value.split('\n');
+            let outputMas = [];
+            if(str.length-(+this.maxRows.value)>0) {
+                for (let i = 0; i < (+this.maxRows.value); i++) {
+                    outputMas[i] =str[i];
+                }
+                str = this.outputText(outputMas.join('\n'));
+            }
+            else {
+                str = this.outputText(str.join('\n'));
+            }
+        }
+        if(this.maxColumns.value != undefined && this.maxColumns.value!=""){
+            this.outputText(str.split(/\n/mg).map(x => x.substr(0, (+this.maxColumns.value))).join('\n'));
+        }
+    }
+
+    outputText(str) {
+        this.text.value ="";
+        this.text.value = str;
+        return str;
+    }
+
+};
 //#endregion
 
 //#region Point_4
-let calculator = {
+class Calculator  {
 
-    selectOperation() {
-        let firstNum =document.getElementById("firstNum").value;
-        let secondNum =document.getElementById("secondNum").value;
-        if(!firstNum.match(/^\d+$/)){
-            document.getElementById("firstNum").value = "Incorrect data";
-            if(!secondNum.match(/^\d+$/)) {
-                document.getElementById("secondNum").value = "Incorrect data";
+    static selectOperation(a,b,selectValue) {
+        if(!a.match(/^\d+$/)){
+            a = "Incorrect data";
+            if(!b.match(/^\d+$/)) {
+                b = "Incorrect data";
             }
             return false;
         }
-        if(!secondNum.match(/^\d+$/)){
-            document.getElementById("secondNum").value = "Incorrect data";
+        if(!b.match(/^\d+$/)){
+            b = "Incorrect data";
             return false;
         }
-        firstNum =+document.getElementById("firstNum").value;
-        secondNum =document.getElementById("secondNum").value;
-        let selectValue = document.getElementById('s5').value;
+        a=+a;
+        b=+b;
         if(selectValue == "plus")
-            calculator.outputResult(calculator.add(firstNum, secondNum));
+            Calculator.outputResult(Calculator.add(a, b));
         if(selectValue =="minus")
-            calculator.outputResult(calculator.minus(firstNum, secondNum))
+            Calculator.outputResult(Calculator.minus(a, b))
         if(selectValue =="composition")
-            calculator.outputResult(calculator.composition(firstNum, secondNum));
+            Calculator.outputResult(Calculator.composition(a, b));
         if(selectValue =="division")
-            calculator.outputResult(calculator.division(firstNum, secondNum));
+            Calculator.outputResult(Calculator.division(a, b));
         if(selectValue =="exponentiation")
-            calculator.outputResult(calculator.exponentiation(firstNum, secondNum));
-    },
+            Calculator.outputResult(Calculator.exponentiation(a, b));
+    }
 
-    add (a,b) {
+    static add (a,b) {
         return a+b;
-    },
+    }
 
-    minus (a,b){
+    static minus (a,b){
         return a-b;
-    },
+    }
 
-    composition(a,b){
+    static composition(a,b){
         return a*b;
-    },
+    }
 
-    division(a,b){
+    static division(a,b){
         return a/b;
-    },
+    }
 
-    exponentiation(a,b){
+    static exponentiation(a,b){
         return Math.pow(a,b);
-    },
+    }
 
-    outputResult(result) {
+    static outputResult(result) {
         document.getElementById("result").value = "";
         document.getElementById("result").value = Math.round(result*10000)/10000;
     }
@@ -299,9 +317,15 @@ let calculator = {
 //#endregion
 
 //#region Point_5
-let objSortMas = {
+class SortMas  {
+
+    constructor(arr, selectValue){
+        this.selectValue = selectValue;
+        this.arr = arr;
+    }
+
     insertionSort(arr) {
-        for (let i = 0; i < arr.length; i++)
+        for (let i = 0; i <arr.length; i++)
         {
             let v = arr[ i ], j = i-1;
             while (j >= 0 && arr[j] > v)
@@ -311,13 +335,14 @@ let objSortMas = {
             arr[j+1] = v;
         }
         return arr;
-    },
+    }
 
     selectionSort(arr) {
         let temp;
         for(let i=0;i<arr.length;i++)
         {
             let iMin = i;
+
             for(let j = i+1;j<arr.length;j++)
             {
                 if(arr[j]<arr[iMin])
@@ -331,12 +356,12 @@ let objSortMas = {
             }
         }
         return arr;
-    },
+    }
 
     bubbleSort(arr) {
         for(let i =0;i<arr.length;i++){
             for(let j = i+1;j<arr.length;j++){
-                if(arr[i]> arr[j]){
+                if(arr[i] > arr[j]){
                     let temp = arr[i];
                     arr[i] = arr[j];
                     arr[j] = temp;
@@ -344,7 +369,7 @@ let objSortMas = {
             }
         }
         return arr;
-    },
+    }
 
     quickSort(arr) {
         if (arr.length <= 1) {
@@ -356,38 +381,38 @@ let objSortMas = {
         for (let i = 1; i < arr.length; i++) {
             arr[i] < pivot ? left.push(arr[i]) : right.push(arr[i]);
         }
-        return objSortMas.quickSort(left).concat(pivot, objSortMas.quickSort(right));
-    },
+        return this.quickSort(left).concat(pivot, this.quickSort(right));
+    }
 
     selectFunctionSort() {
 
-        if(!document.getElementById('initialMasForSort').value.match(/[0-9\s]+/)) {
-            document.getElementById('initialMasForSort').value = "Incorrect Data";
+        if(!this.arr.value.match(/[0-9\s]+/)) {
+            this.arr = "Incorrect Data";
             return false;
         }
-        let selectValue=document.getElementById('s2').value,initialMas = document.getElementById("initialMasForSort").value.split(' ').map(x=>+x),sortMas;
+        let initialMas = this.arr.value.split(' ').map(x=>+x),sortMas;
         if(initialMas !=undefined) {
-            if (selectValue == "quickSort") {
-                sortMas = objSortMas.quickSort(initialMas);
+            if (this.selectValue == "quickSort") {
+                sortMas = this.quickSort(initialMas);
             }
-            if (selectValue == "insertSort") {
-                sortMas = objSortMas.insertionSort(initialMas);
+            if (this.selectValue == "insertSort") {
+                sortMas =  this.insertionSort(initialMas);
             }
-            if (selectValue == "selectionSort") {
-                sortMas = objSortMas.selectionSort(initialMas);
+            if (this.selectValue == "selectionSort") {
+                sortMas = this.selectionSort(initialMas);
             }
-            if (selectValue == "bubbleSort") {
-                sortMas = objSortMas.bubbleSort(initialMas);
+            if (this.selectValue == "bubbleSort") {
+                sortMas = this.bubbleSort(initialMas);
             }
-            objSortMas.outputSortMas(sortMas);
+            this.outputSortMas(sortMas);
         }
-    },
+    }
 
     outputSortMas(arr) {
-        document.getElementById('initialMasForSort').value = "";
+        this.arr.value = "";
         for(let value of arr) {
-            document.getElementById('initialMasForSort').value +=value + " ";
-        };
+            this.arr.value +=value + " ";
+        }
     }
 };
 
@@ -395,7 +420,13 @@ let objSortMas = {
 
 //#region Point_6
 
-let binaryOperations = {
+class BinaryOperations {
+
+    constructor(num, selectValue){
+        this.num = num;
+        this.selectValue = selectValue;
+    }
+
     convertToBin(num) {
         let out = [], bit = 1;
         while (num >= bit) {
@@ -406,7 +437,7 @@ let binaryOperations = {
             bit <<= 1;
         }
         return out;
-    },
+    }
 
     convertToDec(num) {
         let out =0,  bit = 1;
@@ -417,26 +448,25 @@ let binaryOperations = {
         let masValue = [];
         masValue[0] = out;
         return masValue;
-    },
+    }
 
-    selectOperation(num) {
-        if(!num.match(/^\d+$/)){
-            document.getElementById('numToConvert').value = "Incorrect data";
+    selectOperation() {
+        if(!this.num.value.match(/^\d+$/)){
+            this.num.value = "Incorrect data";
             return false;
         }
-        let selectValue = document.getElementById('s7').value;
-        if(selectValue =="convertToBin"){
-            binaryOperations.outputMas(binaryOperations.convertToBin(num));
+        if(this.selectValue =="convertToBin"){
+            this.outputMas(this.convertToBin(this.num.value));
         }
-        if(selectValue == "convertToDesc"){
-            binaryOperations.outputMas(binaryOperations.convertToDec(num));
+        if(this.selectValue == "convertToDesc"){
+            this.outputMas(this.convertToDec(this.num.value));
         }
-    },
+    }
 
-    outputMas(num) {
-        document.getElementById('numToConvert').value = "";
-        for(let value of num)
-            document.getElementById('numToConvert').value += value;
+    outputMas(arr) {
+        this.num.value = "";
+        for(let value of arr)
+            this.num.value += value;
     }
 }
 

@@ -15,7 +15,7 @@
         <option value="searchMaxMinMediumElemMas">Search max min medium elements of array</option>
         <option value="ascendingSequenceMas">Ascending sequence of array</option>
     </select>
-    <input type="button" onclick="objSearchElemMas.selectFunctionSearch()" value="ok">
+    <input type="button" onclick="new SearchElemMas(document.getElementById('initialMasForSearch')).selectFunctionSearch()" value="ok">
 </form>
 </br>
 <br><label>Task 2)</label></br>
@@ -31,13 +31,13 @@
         <option value="MStoDate">MS to Date(YYYY-MM-DD)</option>
         <option value="DateToMS">Date to MS</option>
     </select>
-    <input type="button" onclick="dateFormatter.selectParseTemplate()" value="ok">
+    <input type="button" onclick="new dateFormatter(document.getElementById('date'), document.getElementById('s1').value).selectParseTemplate()" value="ok">
 </form>
 </br>
 <br><label>Task 3)</label></br>
 <br>
 <form name="f4">
-    <textarea id="test">Input text</textarea>
+    <textarea id="text">Input text</textarea>
     <select  id="s6">
         <option value="charWrap" >Char wrap</option>
         <option value="wordWrap">Word wrap</option>
@@ -46,7 +46,7 @@
     </select>
     <label>Max rows: <input type="text" id="maxRows"></label>
     <label>Max count char: <input type="text" id="maxColumns"></label>
-    <input type="button" onclick="changeTextFormatter(document.getElementById('test').value,document.getElementById('maxRows').value,document.getElementById('maxColumns').value)" value="ok">
+    <input type="button" onclick="new TextFormatter(document.getElementById('maxRows'),document.getElementById('maxColumns'),document.getElementById('text'),document.getElementById('s6').value).changeTextFormatter()" value="ok">
 </form>
 </br>
 <br><label>Task 4)</label></br>
@@ -63,7 +63,7 @@
         <option value="division">/</option>
         <option value="exponentiation">^</option>
     </select>
-    <input type="button" onclick="calculator.selectOperation()" value="ok">
+    <input type="button" onclick="Calculator.selectOperation(document.getElementById('firstNum').value, document.getElementById('secondNum').value, document.getElementById('s5').value)" value="ok">
     </br>
 </form>
 </br>
@@ -77,7 +77,7 @@
         <option value="selectionSort">Selection Sort</option>
         <option value="bubbleSort">Bubble Sort</option>
     </select>
-    <input type="button" onclick="objSortMas.selectFunctionSort()" value="ok">
+    <input type="button" onclick="new SortMas(document.getElementById('initialMasForSort'),document.getElementById('s2').value).selectFunctionSort()" value="ok">
 </form>
 </br>
 <br><label>Task 6)</label></br>
@@ -88,7 +88,7 @@
         <option value="convertToBin" >Convert to bin</option>
         <option value="convertToDesc">Convert to desc</option>
     </select>
-    <input type="button" onclick="binaryOperations.selectOperation(document.getElementById('numToConvert').value)" value="ok">
+    <input type="button" onclick=" new BinaryOperations(document.getElementById('numToConvert'),document.getElementById('s7').value).selectOperation()" value="ok">
 </form>
 </br>
 </body>

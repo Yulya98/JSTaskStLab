@@ -1,8 +1,14 @@
-let cacheValue ={};
+"use strict";
 
-let calculator = {
 
-    callErrorFunction(){
+class Calculator {
+
+    constructor(cacheValue, cacheFunction){
+        this.cacheValue = cacheFunction;
+        this.cacheValue = cacheValue;
+    }
+
+    static callErrorFunction(){
         if(!document.getElementById("firstNum").value.match(/^\d+$/)){
             document.getElementById("firstNum").value = "Incorrect data";
             if(!document.getElementById("secondNum").value.match(/^\d+$/))
@@ -14,10 +20,10 @@ let calculator = {
             return false;
         }
         return true;
-    },
+    }
 
     selectOperation() {
-        if(!calculator.callErrorFunction()){
+        if(!Calculator.callErrorFunction()){
             return false;
         }
         let selectValue = document.getElementById('s5').value;
@@ -26,50 +32,50 @@ let calculator = {
         obj[2] =+document.getElementById("secondNum").value;
         if(selectValue == "plus") {
             obj[0]="add"
-            calculator.outputResult(calculator.add(obj));
+            Calculator.outputResult(Calculator.add(obj));
         }
         if(selectValue =="minus"){
             obj[0] ="minus";
-            calculator.outputResult(calculator.minus(obj));
+            Calculator.outputResult(Calculator.minus(obj));
         }
         if(selectValue ==="composition") {
             obj[0] ="composition";
-            calculator.outputResult(calculator.composition(obj));
+            Calculator.outputResult(Calculator.composition(obj));
         }
         if(selectValue =="division") {
             obj[0] ="division";
-            calculator.outputResult(calculator.division(obj));
+            Calculator.outputResult(Calculator.division(obj));
         }
         if(selectValue =="exponentiation") {
             obj[0] ="exponentiation";
-            calculator.outputResult(calculator.exponentiation(obj));
+            Calculator.outputResult(Calculator.exponentiation(obj));
         }
-    },
+    }
 
-    add(obj) {
+    static add(obj) {
         return obj[1]+obj[2];
-    },
+    }
 
-    minus(obj){
+    static minus(obj){
         return obj[1]-obj[2];
-    },
+    }
 
-    composition(obj){
+    static composition(obj){
         return obj[1]*obj[2];
-    },
+    }
 
-    division(obj){
+    static division(obj){
         return obj[1]/obj[2];
-    },
+    }
 
-    exponentiation(obj){
+    static exponentiation(obj){
         return Math.pow(obj[1],obj[2]);
-    },
+    }
 
-    outputResult(result) {
+    static outputResult(result) {
         document.getElementById("result").value = "";
         document.getElementById("result").value = Math.round(result*10000)/10000;
-    },
+    }
 
     makeCachingValue(f,cache) {
         let cacheValue = cache;
@@ -86,7 +92,7 @@ let calculator = {
             return cacheValue[obj[0]+obj[1]+obj[2]];
         };
 
-    },
+    }
 
     definitionFunctionCache(f,cacheFunctions) {
 
@@ -99,43 +105,59 @@ let calculator = {
             return this.cacheFunctions[obj[0]];
 
         };
-    },
+    }
 
     definitionFunction(obj,flag) {
         if(flag == true) {
-            calculator.addNewOption(obj[0]);
+            Calculator.addNewOption(obj[0]);
         }
         let mas =[obj[1],obj[2],obj[3]];
         return mas.join(' ');
-    },
+    }
 
-    addNewOption(str){
+    static addNewOption(str){
         let objSel = document.getElementById("s7");
         objSel.options[objSel.options.length] = new Option(str, str);
-    },
+    }
 
     callFunction(str) {
-        if(!calculator.callErrorFunction()){
+        if(!Calculator.callErrorFunction()){
             return false;
         }
-        let mas1 = calculator.definitionFunction(str,false).split(' ');
+        let mas1 = Singleton.getInstance().definitionFunction(str,false).split(' ');
         let newFunc = new Function(mas1[0],mas1[1]+" "+mas1[2]);
-        newFunc = calculator.makeCachingValue(newFunc,cacheValue);
+        newFunc = this.makeCachingValue(newFunc,this.cacheValue);
         let obj ={};
         obj[0] = str[0];
         obj[1] = +document.getElementById("firstNum").value;
         obj[2] = +document.getElementById("secondNum").value;
-        calculator.outputResult(newFunc(obj));
+        Calculator.outputResult(newFunc(obj));
     }
 };
 
-function init() {
-    let cacheFunction ={};
-    calculator.definitionFunction = calculator.definitionFunctionCache(calculator.definitionFunction,cacheFunction);
-    calculator.add = calculator.makeCachingValue(calculator.add, cacheValue);
-    calculator.minus = calculator.makeCachingValue(calculator.minus,cacheValue);
-    calculator.composition = calculator.makeCachingValue(calculator.composition,cacheValue);
-    calculator.division = calculator.makeCachingValue(calculator.division,cacheValue);
-}
+var Singleton = (function () {
+    var instance;
+
+    function createInstance() {
+        let cacheFunction ={};
+        let cacheValue ={};
+        let calculator = new Calculator(cacheValue,cacheFunction);
+        calculator.definitionFunction = calculator.definitionFunctionCache(calculator.definitionFunction,cacheFunction);
+        Calculator.add = calculator.makeCachingValue(Calculator.add, cacheValue);
+        Calculator.minus = calculator.makeCachingValue(Calculator.minus,cacheValue);
+        Calculator.composition = calculator.makeCachingValue(Calculator.composition,cacheValue);
+        Calculator.division = calculator.makeCachingValue(Calculator.division,cacheValue);
+        return calculator;
+    }
+
+    return {
+        getInstance: function () {
+            if (!instance) {
+                instance = createInstance();
+            }
+            return instance;
+        }
+    };
+})();
 
 //#endregion
