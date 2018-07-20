@@ -48,21 +48,21 @@ var calculator =(function() {
         }
         var obj ={};
         obj[1] = +firstNumElem.value;
-        obj[2] =+secondNumElem.value;
+        obj[2] = +secondNumElem.value;
         if(selectValue == OPERATIONPLUS) {
-            obj[0]= NAMEFANCTIONADD;
+            obj[0] = NAMEFANCTIONADD;
             outputResult(add(obj),resultElem);
         }
         if(selectValue == OPERATIONMINUS){
-            obj[0] =NAMEFACTIONMINUS;
+            obj[0] = NAMEFACTIONMINUS;
             outputResult(minus(obj),resultElem);
         }
         if(selectValue == OPERATIONCOMPOSITION) {
-            obj[0] =NAMEFANCTIONCOMPOSITION;
+            obj[0] = NAMEFANCTIONCOMPOSITION;
             outputResult(composition(obj),resultElem);
         }
         if(selectValue == OPERATIONDIVISION) {
-            obj[0] =NAMEFANCTIONDIVISION;
+            obj[0] = NAMEFANCTIONDIVISION;
             outputResult(division(obj),resultElem);
         }
         if(selectValue == OPERATIONEXPONATION) {
@@ -71,24 +71,71 @@ var calculator =(function() {
         }
     }
 
+    var checkType = function(obj){
+        if(typeof obj[1] == 'number' && typeof  obj[2] == 'number'){
+            return true;
+        }
+        return false;
+    }
+
     var add = function (obj) {
-        return obj[1]+obj[2];
+        try {
+            if (!checkType(obj)) {
+                throw  new TypeError("Argument should be number");
+            }
+            return obj[1] + obj[2];
+        }
+        catch (e) {
+            alert(e.message);
+        }
     }
 
     var minus = function(obj){
-        return obj[1]-obj[2];
+        try {
+            if (!checkType(obj)) {
+                throw  new TypeError("Argument should be number");
+            }
+            return obj[1] - obj[2];
+        }
+        catch (e) {
+            alert(e.message);
+        }
     }
 
     var composition = function(obj){
-        return obj[1]*obj[2];
+        try {
+            if (!checkType(obj)) {
+                throw  new TypeError("Argument should be number");
+            }
+            return obj[1] * obj[2];
+        }
+        catch (e) {
+            alert(e.message);
+        }
     }
 
     var division = function(obj){
-        return obj[1]/obj[2];
+        try {
+            if (!checkType(obj)) {
+                throw  new TypeError("Argument should be number");
+            }
+            return obj[1] / obj[2];
+        }
+        catch (e) {
+            alert(e.message);
+        }
     }
 
     var exponentiation = function(obj){
-        return Math.pow(obj[1],obj[2]);
+        try {
+            if (!checkType(obj)) {
+                throw  new TypeError("Argument should be number");
+            }
+            return Math.pow(obj[1],obj[2]);
+        }
+        catch (e) {
+            alert(e.message);
+        }
     }
 
     var outputResult = function (result, resultElem) {
@@ -100,7 +147,7 @@ var calculator =(function() {
         this.cacheValue = cache;
 
         return function (obj){
-            if(!((obj[0]+obj[1]+obj[2] in this.cacheValue) || (obj[0]+obj[2]+obj[1] in this.cacheValue) && obj[0]== NAMEFANCTIONEXPONATION)){
+            if(!((obj[0]+obj[1]+obj[2] in this.cacheValue) || (obj[0]+obj[2]+obj[1] in this.cacheValue) && obj[0] == NAMEFANCTIONEXPONATION)){
                 this.cacheValue[obj[0]+obj[1]+obj[2]] = f.call(this,obj);
             }
             if(obj[0] == NAMEFANCTIONEXPONATION){
@@ -127,16 +174,14 @@ var calculator =(function() {
     }
 
     var definitionFunction = function (obj,flag,objSelectElem) {
-        debugger;
         if(flag == true) {
             addNewOption(obj[0],objSelectElem);
         }
-        var mas =[obj[1],obj[2],obj[3]];
+        var mas = [obj[1],obj[2],obj[3]];
         return mas.join(' ');
     }
 
     var f = function (obj,flag,objSelectElem) {
-        debugger;
         definitionFunction(obj,flag,objSelectElem);
     }
 

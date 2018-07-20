@@ -52,9 +52,9 @@ class Calculator {
         }
         let obj ={};
         obj[1] = +firstNum.value;
-        obj[2] =+secondNum.value;
+        obj[2] = +secondNum.value;
         if(selectValue == OPERATIONPLUS) {
-            obj[0]= NAMEFANCTIONADD;
+            obj[0] = NAMEFANCTIONADD;
             Calculator.outputResult(Calculator.add(obj),result);
         }
         if(selectValue == OPERATIONMINUS){
@@ -75,24 +75,67 @@ class Calculator {
         }
     }
 
+    static checkType(obj){
+        if(typeof obj[1] == 'number' && typeof  obj[2] == 'number'){
+            return true;
+        }
+        return false;
+    }
+
     static add(obj) {
-        return obj[1]+obj[2];
+        try {
+
+            if (!Calculator.checkType(obj))
+                throw new Error("Argument should be number");
+            return obj[1] + obj[2];
+        }
+        catch (e) {
+            alert(e.message);
+        }
     }
 
     static minus(obj){
-        return obj[1]-obj[2];
+        try {
+            if (!Calculator.checkType(obj))
+                throw new Error("Argument mast be number");
+            return obj[1] - obj[2];
+        }
+        catch (e) {
+            alert(e.message);
+        }
     }
 
     static composition(obj){
-        return obj[1]*obj[2];
+        try {
+            if (!Calculator.checkType(obj))
+                throw new Error("Argument should be number");
+            return obj[1] * obj[2];
+        }
+        catch (e) {
+            alert(e.message);
+        }
     }
 
     static division(obj){
-        return obj[1]/obj[2];
+        try {
+            if (!Calculator.checkType(obj))
+                throw new Error("Argument should be number");
+            return obj[1] / obj[2];
+        }
+        catch (e) {
+            alert(e.message);
+        }
     }
 
     static exponentiation(obj){
-        return Math.pow(obj[1],obj[2]);
+        try {
+            if (!Calculator.checkType(obj))
+                throw new Error("Argument mast be number");
+            return Math.pow(obj[1], obj[2]);
+        }
+        catch {e} {
+            alert(e.message);
+        }
     }
 
     static outputResult(result,resultElem) {
@@ -104,7 +147,7 @@ class Calculator {
         let cacheValue = cache;
 
         return function (obj){
-            if(!((obj[0]+obj[1]+obj[2] in cacheValue) || (obj[0]+obj[2]+obj[1] in cacheValue) && obj[0]== NAMEFANCTIONEXPONATION)){
+            if(!((obj[0]+obj[1]+obj[2] in cacheValue) || (obj[0]+obj[2]+obj[1] in cacheValue) && obj[0] == NAMEFANCTIONEXPONATION)){
                 cacheValue[obj[0]+obj[1]+obj[2]] = f.call(this,obj);
             }
             if(obj[0] == NAMEFANCTIONEXPONATION){
@@ -131,11 +174,20 @@ class Calculator {
     }
 
     definitionFunction(obj,flag,objSelectElem) {
-        if(flag == true) {
-            Calculator.addNewOption(obj[0],objSelectElem);
+        try {
+            if (flag == true) {
+                if (objSelectElem != "undefined") {
+                    Calculator.addNewOption(obj[0], objSelectElem);
+                }
+                else
+                    throw new TypeError("Incorrect value");
+            }
+            let mas = [obj[1], obj[2], obj[3]];
+            return mas.join(' ');
         }
-        let mas =[obj[1],obj[2],obj[3]];
-        return mas.join(' ');
+        catch (e) {
+            alert(e.message);
+        }
     }
 
     static addNewOption(str,objSelectElem){
@@ -161,8 +213,8 @@ var Singleton = (function () {
     var instance;
 
     function createInstance() {
-        let cacheFunction ={};
-        let cacheValue ={};
+        let cacheFunction = {};
+        let cacheValue = {};
         let calculator = new Calculator(cacheValue,cacheFunction);
         calculator.definitionFunction = calculator.definitionFunctionCache(calculator.definitionFunction,cacheFunction);
         Calculator.add = calculator.makeCachingValue(Calculator.add, cacheValue);

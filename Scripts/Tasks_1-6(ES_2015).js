@@ -46,77 +46,105 @@ var errorControl = (function () {
 var objSearchElemMas = (function() {
 
     var SELECTSUMELEM = "sumOfElemMasIsMax_O(n)";
-    var SELECTSUMELEM_2 ="sumOfElemMasIsMax_O(n^2)";
+    var SELECTSUMELEM_2 = "sumOfElemMasIsMax_O(n^2)";
     var SELECTSERCELEM = "searchMaxMinMediumElemMas";
     var SELECTSEQUANCEMAS = "ascendingSequenceMas";
 
     var getMaxSubSumOn = function (arr) {
-        var outArr= [], sum = 0, maxSum = 0;
-        for (var r = 0; r < arr.length; ++r) {
-            sum += +arr[r];
-            if (sum > maxSum)
-                maxSum = sum;
-            if (sum < 0)
-                sum = 0;
+        try {
+            if(!Array.isArray(arr))
+                throw TypeError("Incorrect value");
+            var outArr = [], sum = 0, maxSum = 0;
+            for (var r = 0; r < arr.length; ++r) {
+                sum += +arr[r];
+                if (sum > maxSum)
+                    maxSum = sum;
+                if (sum < 0)
+                    sum = 0;
+            }
+            outArr[0] = maxSum;
+            return outArr;
         }
-        outArr[0] = maxSum;
-        return outArr;
+        catch (e) {
+            alert(e.message);
+        }
     }
 
     var getMaxSubSumSquareOn_2 = function (arr) {
-        var outArr= [], maxSum = 0;
-        for (var i = 0; i < arr.length; i++) {
-            var sum = 0;
-            for (var j = i; j < arr.length; j++) {
-                sum += +arr[j];
-                if (sum > maxSum)
-                    maxSum = sum;
+        try {
+            if (!Array.isArray(arr))
+                throw TypeError("Incorrect value");
+            var outArr = [], maxSum = 0;
+            for (var i = 0; i < arr.length; i++) {
+                var sum = 0;
+                for (var j = i; j < arr.length; j++) {
+                    sum += +arr[j];
+                    if (sum > maxSum)
+                        maxSum = sum;
+                }
             }
+            outArr[0] = maxSum;
+            return outArr;
         }
-        outArr[0] = maxSum;
-        return outArr
+        catch (e) {
+            alert(e.message);
+        }
     }
 
     var searchMaxMinMediumElemMas = function (arr) {
-        var masMinMaxMediumElemMas = [], minEl,maxEl,mediumEl;
-        arr = objSortMas.quickSort(arr);
-        minEl = arr[0];
-        maxEl = arr[arr.length-1];
-        if(arr.length%2 ==0){
-            mediumEl =(arr[arr.length/2] + arr[(arr.length/2) +1])/2
+        try {
+            if (!Array.isArray(arr))
+                throw TypeError("Incorrect value");
+            var masMinMaxMediumElemMas = [], minEl, maxEl, mediumEl;
+            arr = objSortMas.quickSort(arr);
+            minEl = arr[0];
+            maxEl = arr[arr.length - 1];
+            if (arr.length % 2 == 0) {
+                mediumEl = (arr[arr.length / 2] + arr[(arr.length / 2) + 1]) / 2
+            }
+            else {
+                mediumEl = arr[(arr.length + 1) / 2]
+            }
+            masMinMaxMediumElemMas[0] = minEl;
+            masMinMaxMediumElemMas[1] = maxEl;
+            masMinMaxMediumElemMas[2] = mediumEl;
+            return masMinMaxMediumElemMas;
         }
-        else {
-            mediumEl = arr[(arr.length+1)/2]
+        catch (e) {
+            alert(e.message);
         }
-        masMinMaxMediumElemMas[0] = minEl;
-        masMinMaxMediumElemMas[1] = maxEl;
-        masMinMaxMediumElemMas[2] = mediumEl;
-        return masMinMaxMediumElemMas;
     }
 
     var searchAscendingSequenceMas = function (arr) {
-        var outputMas = [], count,countArr = [];
-        for (var i = 0; i < arr.length; i++) {
-            count = 0;
-            for (var j = i + 1; j < arr.length; j++) {
-                if (arr[j - 1] < arr[j]) {
-                    count++;
-                    if (arr[j] == arr.length - 1) {
+        try {
+            if (!Array.isArray(arr))
+                throw TypeError("Incorrect value");
+            var outputMas = [], count, countArr = [];
+            for (var i = 0; i < arr.length; i++) {
+                count = 0;
+                for (var j = i + 1; j < arr.length; j++) {
+                    if (arr[j - 1] < arr[j]) {
+                        count++;
+                        if (arr[j] == arr.length - 1) {
+                            countArr.push(count);
+                            break;
+                        }
+                    }
+                    else {
                         countArr.push(count);
                         break;
                     }
                 }
-                else {
-                    countArr.push(count);
-                    break;
-                }
             }
+            var maxValue = Math.max.apply(null, countArr), index = countArr.indexOf(maxValue);
+            for (var i = index, j = 0; i <= index + maxValue; i++, j++) {
+                outputMas[j] = arr[i];
+            }
+            return outputMas;
         }
-        var maxValue = Math.max.apply(null, countArr), index = countArr.indexOf(maxValue);
-        for (var i = index, j=0; i <= index + maxValue; i++,j++) {
-            outputMas[j] = arr[i];
+        catch (e) {
+            alert(e.message);
         }
-        return outputMas;
     }
 
     var selectFunctionSearch = function selectFunctionSearch (initialMasElem, selectValue,errorMassageElem,resultElem) {
@@ -146,7 +174,7 @@ var objSearchElemMas = (function() {
     var outputMasToInputElem =  function (arr, str,resultElem) {
         resultElem.value = str+ ": ";
         for(var i=0;i<arr.length;i++){
-            resultElem.value +=arr[i] + " ";
+            resultElem.value += arr[i] + " ";
         }
     }
     return{
@@ -237,7 +265,7 @@ var dateFormatter = (function(){
     }
 
     var outputDate = function(date,initialDateElem) {
-        initialDateElem.value ="";
+        initialDateElem.value = "";
         initialDateElem.value = date;
     }
 
@@ -276,7 +304,7 @@ var textFormatter = (function() {
         if (selectValue == WITHOUTWRAP) {
             resultText.setAttribute('wrap', 'off');
         }
-        if (countRowsElem.value != undefined && countRowsElem.value != "") {
+        if (countRowsElem.value != undefined && countRowsElem.value !=  "") {
             str = resultText.value.split('\n');
             var outputMas = [];
             if (str.length - countRowsElem.value > 0) {
@@ -335,20 +363,59 @@ var calculator =(function(){
             outputResult(exponentiation(firstNumElem, secondNumElem),resultElem);
     }
 
+    var checkType = function(a,b){
+        if(typeof a == 'number' && typeof  b == 'number'){
+            return true;
+        }
+        return false;
+    }
+
     var add = function (a,b) {
-        return a+b;
+        try {
+            if (!checkType(a, b)) {
+                throw  new TypeError("Argument should be number");
+            }
+            return a + b;
+        }
+        catch (e) {
+            alert(e.message);
+        }
     }
 
     var minus = function(a,b){
-        return a-b;
+        try {
+            if (!checkType(a, b)) {
+                throw  new TypeError("Argument should be number");
+            }
+            return a - b;
+        }
+        catch (e) {
+            alert(e.message);
+        }
     }
 
     var composition = function(a,b){
-        return a*b;
+        try {
+            if (!checkType(a, b)) {
+                throw  new TypeError("Argument should be number");
+            }
+            return a * b;
+        }
+        catch (e) {
+            alert(e.message);
+        }
     }
 
     var division = function(a,b){
-        return a/b;
+        try {
+            if (!checkType(a, b)) {
+                throw  new TypeError("Argument should be number");
+            }
+            return a / b;
+        }
+        catch (e) {
+            alert(e.message);
+        }
     }
 
     var exponentiation = function(a,b){
@@ -375,64 +442,86 @@ var objSortMas = (function(){
     var BUBBLESORT = "bubbleSort";
 
     var insertionSort = function (arr) {
-
-        for (var i = 0; i < arr.length; i++)
-        {
-            var v = arr[ i ], j = i-1;
-            while (j >= 0 && arr[j] > v)
-            {
-                arr[j+1] = arr[j]; j--;
+        try {
+            if (!Array.isArray(arr))
+                throw TypeError("Incorrect value");
+            for (var i = 0; i < arr.length; i++) {
+                var v = arr[i], j = i - 1;
+                while (j >= 0 && arr[j] > v) {
+                    arr[j + 1] = arr[j];
+                    j--;
+                }
+                arr[j + 1] = v;
             }
-            arr[j+1] = v;
+            return arr;
         }
-        return arr;
+        catch (e) {
+            alert(e.message);
+        }
     }
 
     var selectionSort = function (arr) {
-
-        for(var i=0;i<arr.length;i++)
-        {
-            var iMin = i;
-            for(var j = i+1;j<arr.length;j++)
-            {
-                if(arr[j]<arr[iMin])
-                    iMin = j;
+        try {
+            if (!Array.isArray(arr))
+                throw TypeError("Incorrect value");
+            for (var i = 0; i < arr.length; i++) {
+                var iMin = i;
+                for (var j = i + 1; j < arr.length; j++) {
+                    if (arr[j] < arr[iMin])
+                        iMin = j;
+                }
+                if (iMin != i) {
+                    var c = arr[iMin];
+                    arr[iMin] = arr[i];
+                    arr[i] = c;
+                }
             }
-            if(iMin != i)
-            {
-                var c = arr[iMin];
-                arr[iMin] = arr[i];
-                arr[i] = c;
-            }
+            return arr;
         }
-        return arr;
+        catch (e) {
+            alert(e.message);
+        }
     }
 
     var bubbleSort = function (arr) {
-        var temp;
-        for(var i =0;i<arr.length;i++){
-            for(var j = i+1;j<arr.length;j++){
-                if(arr[i]> arr[j]){
-                    temp = arr[i];
-                    arr[i] = arr[j];
-                    arr[j] = temp;
+        try {
+            if (!Array.isArray(arr))
+                throw TypeError("Incorrect value");
+            var temp;
+            for (var i = 0; i < arr.length; i++) {
+                for (var j = i + 1; j < arr.length; j++) {
+                    if (arr[i] > arr[j]) {
+                        temp = arr[i];
+                        arr[i] = arr[j];
+                        arr[j] = temp;
+                    }
                 }
             }
+            return arr;
         }
-        return arr;
+        catch (e) {
+            alert(e.message)
+        }
     }
 
     var quickSort = function (arr) {
-        if (arr.length <= 1) {
-            return arr;
-        }
+        try {
+            if (!Array.isArray(arr))
+                throw TypeError("Incorrect value");
+            if (arr.length <= 1) {
+                return arr;
+            }
 
-        var pivot = arr[0], left = [], right = [];
+            var pivot = arr[0], left = [], right = [];
 
-        for (var i = 1; i < arr.length; i++) {
-            arr[i] < pivot ? left.push(arr[i]) : right.push(arr[i]);
+            for (var i = 1; i < arr.length; i++) {
+                arr[i] < pivot ? left.push(arr[i]) : right.push(arr[i]);
+            }
+            return quickSort(left).concat(pivot, quickSort(right));
         }
-        return quickSort(left).concat(pivot, quickSort(right));
+        catch (e) {
+            alert(e.message);
+        }
     }
 
     var selectFunctionSort = function (initialMasElem,selectValue, errorInitialMas,resultMasSort) {
@@ -443,7 +532,7 @@ var objSortMas = (function(){
         var initialMas = initialMasElem.value.split(' ').map(function (value) { return +value; });
         var sortMas;
 
-        if(initialMas !=undefined) {
+        if(initialMas != undefined) {
             if (selectValue == SELECTQUICKSORT) {
                 sortMas = quickSort(initialMas);
             }
@@ -468,8 +557,7 @@ var objSortMas = (function(){
     }
 
     return{
-        selectFunctionSort: selectFunctionSort,
-        quickSort:quickSort
+        selectFunctionSort: selectFunctionSort
     }
 }());
 
@@ -484,8 +572,8 @@ var binaryOperations = (function() {
 
     var convertToBin = function (num) {
         try {
-            if(typeof  num  == "undefined")
-                throw TypeError("Argument don't should be undefined");
+            if (num == "undefined")
+                throw TypeError("Incorrect date");
             var out = [], bit = 1;
             while (num >= bit) {
                 if (num > 0)
@@ -497,14 +585,14 @@ var binaryOperations = (function() {
             return out;
         }
         catch (e) {
-            alert(e.message );
+            alert(e.message);
         }
     }
 
     var convertToDec = function (num) {
         try {
-            if (typeof  num == "undefined")
-                throw TypeError("Argument don't should be undefined");
+            if (num == "undefined")
+                throw TypeError("Incorrect date");
             var out = 0, bit = 1;
             for (var i = 0; i < num.length; i++) {
                 out += num[i] == "1" ? bit : 0;
@@ -515,7 +603,7 @@ var binaryOperations = (function() {
             return masValue;
         }
         catch (e) {
-            alert(e.message );
+            alert(e.message);
         }
     }
 
