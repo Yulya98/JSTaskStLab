@@ -1,5 +1,30 @@
 "use strict";
+class ControlValue {
 
+    static checkValue(firstNum, errorFirstNumElem, secondNum, errorSecondNumElem) {
+        if (!firstNum.value.match(/^\d+$/)) {
+            errorFirstNumElem.innerHTML = "Incorrect data: ";
+            errorFirstNumElem.setAttribute('style', 'display:inline');
+            if (!secondNum.value.match(/^\d+$/)) {
+                errorSecondNumElem.innerHTML = "Incorrect data: ";
+                errorSecondNumElem.setAttribute('style', 'display:inline');
+            }
+            return false;
+        }
+        else {
+            errorFirstNumElem.setAttribute('style', 'display:none');
+        }
+        if (!secondNum.value.match(/^\d+$/)) {
+            errorSecondNumElem.innerHTML = "Incorrect data";
+            errorSecondNumElem.setAttribute('style', 'display:none');
+            return false;
+        }
+        else {
+            errorSecondNumElem.setAttribute('style', 'display:none');
+        }
+        return true;
+    }
+}
 
 class Calculator {
 
@@ -8,22 +33,8 @@ class Calculator {
         this.cacheValue = cacheValue;
     }
 
-    static callErrorFunction(firstNumElem,SecondNumElem){
-        if(!firstNumElem.value.match(/^\d+$/)){
-            firstNumElem.value = "Incorrect data";
-            if(!SecondNumElem.value.match(/^\d+$/))
-                SecondNumElem.value = "Incorrect data";
-            return false;
-        }
-        if(!SecondNumElem.value.match(/^\d+$/)) {
-            SecondNumElem.value = "Incorrect data";
-            return false;
-        }
-        return true;
-    }
-
-    selectOperation(firstNum,secondNum,selectValue,resultElem) {
-        if(!Calculator.callErrorFunction(firstNum,secondNum)){
+    selectOperation(firstNum,secondNum,selectValue,result,errorFirstNum,errorSecondNum) {
+        if(!ControlValue.checkValue(firstNum,errorFirstNum,secondNum,errorSecondNum)){
             return false;
         }
         let obj ={};
@@ -31,23 +42,23 @@ class Calculator {
         obj[2] =+secondNum.value;
         if(selectValue == "plus") {
             obj[0]="add"
-            Calculator.outputResult(Calculator.add(obj),resultElem);
+            Calculator.outputResult(Calculator.add(obj),result);
         }
         if(selectValue =="minus"){
             obj[0] ="minus";
-            Calculator.outputResult(Calculator.minus(obj),resultElem);
+            Calculator.outputResult(Calculator.minus(obj),result);
         }
         if(selectValue ==="composition") {
             obj[0] ="composition";
-            Calculator.outputResult(Calculator.composition(obj),resultElem);
+            Calculator.outputResult(Calculator.composition(obj),result);
         }
         if(selectValue =="division") {
             obj[0] ="division";
-            Calculator.outputResult(Calculator.division(obj),resultElem);
+            Calculator.outputResult(Calculator.division(obj),result);
         }
         if(selectValue =="exponentiation") {
             obj[0] ="exponentiation";
-            Calculator.outputResult(Calculator.exponentiation(obj),resultElem);
+            Calculator.outputResult(Calculator.exponentiation(obj),result);
         }
     }
 
@@ -118,8 +129,8 @@ class Calculator {
         objSelectElem.options[objSelectElem.options.length] = new Option(str, str);
     }
 
-    callFunction(str,firstNumElem,secondNumElem,resultElem) {
-        if(!Calculator.callErrorFunction(firstNumElem,secondNumElem)){
+    callFunction(str,firstNum,secondNum,result,errorFirstNum,errorSecondNum) {
+        if(!ControlValue.checkValue(firstNum,errorFirstNum,secondNum,errorSecondNum)){
             return false;
         }
         let mas1 = Singleton.getInstance().definitionFunction(str,false).split(' ');
@@ -127,9 +138,9 @@ class Calculator {
         newFunc = this.makeCachingValue(newFunc,this.cacheValue);
         let obj ={};
         obj[0] = str[0];
-        obj[1] = +firstNumElem.value;
-        obj[2] = +secondNumElem.value;
-        Calculator.outputResult(newFunc(obj),resultElem);
+        obj[1] = +firstNum.value;
+        obj[2] = +secondNum.value;
+        Calculator.outputResult(newFunc(obj),result);
     }
 };
 

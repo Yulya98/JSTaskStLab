@@ -5,91 +5,108 @@
     <script src="Scripts/Tasks_1-6(ES_2015).js"></script>
 </head>
 <body>
-<br><label>Task 1) Enter thr array (through a space)</label></br>
-<br>
-<form name="f3">
-    <input type="text" id="initialMasForSearch">
-    <select  id="s3">
-        <option value="sumOfElemMasIsMax_O(n)" >Max sum of array - O(n)</option>
-        <option value="sumOfElemMasIsMax_O(n^2)">Max sum of array - O(n^2)</option>
-        <option value="searchMaxMinMediumElemMas">Search max min medium elements of array</option>
-        <option value="ascendingSequenceMas">Ascending sequence of array</option>
-    </select>
-    <input type="button" onclick="objSearchElemMas.selectFunctionSearch(document.getElementById('initialMasForSearch'),document.getElementById('s3').value)" value="ok">
-</form>
-</br>
-<br><label>Task 2)</label></br>
-<br>
-<form name="f1">
-    <input type="text" id="date">
-    <select  id="s1">
-        <option value="simpleStr" >From DDMMYYYY to YY-MM-DD</option>
-        <option value="simpleStrMonthToStr">From DDMMYYYY to YYYYMMDD</option>
-        <option value="simpleStrToDateObject">From YYYYMMDD to YYYYMMDD</option>
-        <option value="simpleStrToDateObjectHyphenated">From YYYYMMDD to YYYYMMDD, MM-DD-YYYY</option>
-        <option value="fromNow">From YYYY-MM-DD to YYYY-MM-DD</option>
-        <option value="MStoDate">MS to Date(YYYY-MM-DD)</option>
-        <option value="DateToMS">Date to MS</option>
-    </select>
-    <input type="button" onclick="dateFormatter.selectParseTemplate(document.getElementById('date'),document.getElementById('s1').value)" value="ok">
-</form>
-</br>
-<br><label>Task 3)</label></br>
-<br>
-<form name="f4">
-    <textarea id="text">Input text</textarea>
-    <select  id="s6">
-        <option value="charWrap" >Char wrap</option>
-        <option value="wordWrap">Word wrap</option>
-        <option value="sentenceWrap">Sentence wrap</option>
-        <option value="withoutWrap">Without wrap</option>
-    </select>
-    <label>Max rows: <input type="text" id="maxRows"></label>
-    <label>Max count char: <input type="text" id="maxColumns"></label>
-    <input type="button" onclick="textFormatter.changeTextFormatter(document.getElementById('text'),document.getElementById('maxRows'),document.getElementById('maxColumns'),document.getElementById('s6').value)" value="ok">
-</form>
-</br>
-<br><label>Task 4)</label></br>
-<br>
-<form name="f4">
-    <input type="text" id="firstNum" value="Enter the first number">
-    <input type="text" id="secondNum" value="Enter the second number">
-    <input type="text" id="result" value="Result">
+<label><br>Task 1) Enter thr array (through a space)</br>
     <br>
-    <select name="town" id="s5">
-        <option value="plus" >+</option>
-        <option value="minus">-</option>
-        <option value="composition">*</option>
-        <option value="division">/</option>
-        <option value="exponentiation">^</option>
-    </select>
-    <input type="button" onclick="calculator.selectOperation(document.getElementById('firstNum'), document.getElementById('secondNum'),document.getElementById('s5').value,document.getElementById('result'))" value="ok">
+    <form name="f3">
+        <span style="display: none" id="errorInputMasForSearch">Incorrect data:</span>
+        <input type="text" id="initialMasForSearch" value="Enter the array">
+        <select  id="s3">
+            <option value="sumOfElemMasIsMax_O(n)" >Max sum of array - O(n)</option>
+            <option value="sumOfElemMasIsMax_O(n^2)">Max sum of array - O(n^2)</option>
+            <option value="searchMaxMinMediumElemMas">Search max min medium elements of array</option>
+            <option value="ascendingSequenceMas">Ascending sequence of array</option>
+        </select>
+        <input type="text" id="resultSearchMas" value="Result">
+        <input type="button" onclick="objSearchElemMas.selectFunctionSearch(document.getElementById('initialMasForSearch'),document.getElementById('s3').value, document.getElementById('errorInputMasForSearch'),document.getElementById('resultSearchMas'))" value="ok">
+    </form>
     </br>
-</form>
-</br>
-<br><label>Task 5) Enter thr array (through a space)</label></br>
-<br>
-<form name="f2">
-    <input type="text" id="initialMasForSort">
-    <select  id="s2">
-        <option value="quickSort" >Quick Sort</option>
-        <option value="insertSort">Insert Sort</option>
-        <option value="selectionSort">Selection Sort</option>
-        <option value="bubbleSort">Bubble Sort</option>
-    </select>
-    <input type="button" onclick="objSortMas.selectFunctionSort(document.getElementById('initialMasForSort'),document.getElementById('s2').value)" value="ok">
-</form>
-</br>
-<br><label>Task 6)</label></br>
-<br>
-<form name="f4">
-    <input type="text" id="numToConvert">
-    <select id="s7">
-        <option value="convertToBin" >Convert to bin</option>
-        <option value="convertToDesc">Convert to desc</option>
-    </select>
-    <input type="button" onclick="binaryOperations.selectOperation(document.getElementById('numToConvert'), document.getElementById('s7').value)" value="ok">
-</form>
-</br>
+</label>
+<label><br>Task 2)</br>
+    <br>
+    <form name="f1">
+        <input type="text" id="date" value="Input date">
+        <select  id="s1">
+            <option value="simpleStr" >From DDMMYYYY to YY-MM-DD</option>
+            <option value="simpleStrMonthToStr">From DDMMYYYY to YYYYMMDD</option>
+            <option value="simpleStrToDateObject">From YYYYMMDD to YYYYMMDD</option>
+            <option value="simpleStrToDateObjectHyphenated">From YYYYMMDD to YYYYMMDD, MM-DD-YYYY</option>
+            <option value="fromNow">From YYYY-MM-DD to YYYY-MM-DD</option>
+            <option value="MStoDate">MS to Date(YYYY-MM-DD)</option>
+            <option value="DateToMS">Date to MS</option>
+        </select>
+        <input type="button" onclick="dateFormatter.selectParseTemplate(document.getElementById('date'),document.getElementById('s1').value)" value="ok">
+    </form>
+    </br>
+</label>
+<label><br>Task 3)</br>
+    <br>
+    <form name="f4">
+        <textarea id="text">Input text</textarea>
+        <textarea id="textResult">Result</textarea>
+        <select  id="s6">
+            <option value="charWrap" >Char wrap</option>
+            <option value="wordWrap">Word wrap</option>
+            <option value="sentenceWrap">Sentence wrap</option>
+            <option value="withoutWrap">Without wrap</option>
+        </select>
+        <span style="display: none" id="errorRowsCount"></span>
+        <label>Max rows: <input type="text" id="maxRows"></label>
+        <span style="display: none" id="errorColumnsCount"></span>
+        <label>Max count char: <input type="text" id="maxColumns"></label>
+        <input type="button" onclick="textFormatter.changeTextFormatter(document.getElementById('text'),document.getElementById('maxRows'),document.getElementById('maxColumns'),document.getElementById('s6').value, document.getElementById('errorRowsCount'),document.getElementById('errorColumnsCount'),document.getElementById('textResult'))" value="ok">
+    </form>
+    </br>
+</label>
+<br><label>Task 4)</br>
+    <br>
+    <form name="f4">
+        <span style="display: none" id="errorFirstNum"></span>
+        <input type="text" id="firstNum" value="Enter the first number">
+        <span style="display: none" id="errorSecondNum"></span>
+        <input type="text" id="secondNum" value="Enter the second number">
+        <input type="text" id="result" value="Result">
+        <br>
+        <select name="town" id="s5">
+            <option value="plus" >+</option>
+            <option value="minus">-</option>
+            <option value="composition">*</option>
+            <option value="division">/</option>
+            <option value="exponentiation">^</option>
+        </select>
+        <input type="button" onclick="calculator.selectOperation(document.getElementById('firstNum'), document.getElementById('secondNum'),document.getElementById('s5').value,document.getElementById('result'),document.getElementById('errorFirstNum'),document.getElementById('errorSecondNum'))" value="ok">
+        </br>
+    </form>
+    </br>
+</label>
+<label><br>Task 5) Enter thr array (through a space)</br>
+    <br>
+    <form name="f2">
+        <span style="display: none" id="errorInitialMas"></span>
+        <input type="text" id="initialMasForSort" value="Enter the array">
+        <input type="text" id="resultMasSort" value="Result">
+        <select  id="s2">
+            <option value="quickSort" >Quick Sort</option>
+            <option value="insertSort">Insert Sort</option>
+            <option value="selectionSort">Selection Sort</option>
+            <option value="bubbleSort">Bubble Sort</option>
+        </select>
+        <input type="button" onclick="objSortMas.selectFunctionSort(document.getElementById('initialMasForSort'),document.getElementById('s2').value, document.getElementById('errorInitialMas'),document.getElementById('resultMasSort'))" value="ok">
+    </form>
+    </br>
+</label>
+<label><br>Task 6)</br>
+    <br>
+    <form name="f4">
+        <span style="display: none" id="errorNumToConvert"></span>
+        <input type="text" id="numToConvert" value="Enter the number">
+        <input type="text" id="resultConvert" value="Result">
+        <select id="s7">
+            <option value="convertToBin" >Convert to bin</option>
+            <option value="convertToDesc">Convert to desc</option>
+        </select>
+        <input type="button" onclick="binaryOperations.selectOperation(document.getElementById('numToConvert'), document.getElementById('s7').value,document.getElementById('errorNumToConvert'),document.getElementById('resultConvert'))" value="ok">
+    </form>
+    </br>
+</label>
 </body>
 </html>

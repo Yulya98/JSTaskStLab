@@ -6,12 +6,15 @@
     <script src="Scripts/Task_7_7+(ES_2015).js"></script>
 </head>
 <body onload="calculator.init()">
-<br><label>Task 7 and 7+:</label></br>
-<br>
-<input type="text" id="firstNum" value="Enter the first number">
-<input type="text" id="secondNum" value="Enter the second number">
-<input type="text" id="result" value="Result">
-</br>
+<label><br>Task 7 and 7+:</br>
+    <br>
+    <span style="display: none" id="errorFirstNum"></span>
+    <input type="text" id="firstNum" value="Enter the first number">
+    <span style="display: none" id="errorSecondNum"></span>
+    <input type="text" id="secondNum" value="Enter the second number">
+    <input type="text" id="result" value="Result">
+    </br>
+</label>
 <br>
 <form name="f4">
     <select name="town" id="s5">
@@ -21,10 +24,10 @@
         <option value="division">/</option>
         <option value="exponentiation">^</option>
     </select>
-    <input type="button" onclick="calculator.selectOperation(document.getElementById('firstNum'),document.getElementById('secondNum'),document.getElementById('s5').value, document.getElementById('result'))" value="Call built-in function">
+    <input type="button" onclick="calculator.selectOperation(document.getElementById('firstNum'),document.getElementById('secondNum'),document.getElementById('s5').value, document.getElementById('result'),document.getElementById('errorFirstNum'),document.getElementById('errorSecondNum'))" value="Call built-in function">
     <select name="town" id="s7">
     </select>
-    <input type="button" onclick="calculator.callFunction(new Array(document.getElementById('s7').value),document.getElementById('firstNum'), document.getElementById('secondNum'),document.getElementById('result'))" value="Call custom function">
+    <input type="button" onclick="calculator.callFunction(new Array(document.getElementById('s7').value),document.getElementById('firstNum'), document.getElementById('secondNum'),document.getElementById('result'),document.getElementById('errorFirstNum'),document.getElementById('errorSecondNum'))" value="Call custom function">
 </form>
 </br>
 <form name="f4">

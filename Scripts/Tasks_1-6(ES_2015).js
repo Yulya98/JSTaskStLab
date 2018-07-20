@@ -1,3 +1,47 @@
+
+
+var errorControl = (function () {
+    var checkValue = function (firstNum,errorFirstNumElem,flagCountValue,secondNum,errorSecondNumElem) {
+        if(flagCountValue == true){
+            if(!firstNum.value.match(/^\d+$/)){
+                errorFirstNumElem.innerHTML = "Incorrect data: ";
+                errorFirstNumElem.setAttribute('style','display:inline');
+                if(!secondNum.value.match(/^\d+$/)) {
+                    errorSecondNumElem.innerHTML = "Incorrect data: ";
+                    errorSecondNumElem.setAttribute('style','display:inline');
+                }
+                return false;
+            }
+            else{
+                errorFirstNumElem.setAttribute('style','display:none');
+            }
+            if(!secondNum.value.match(/^\d+$/)){
+                errorSecondNumElem.innerHTML = "Incorrect data";
+                errorSecondNumElem.setAttribute('style','display:none');
+                return false;
+            }
+            else {
+                errorSecondNumElem.setAttribute('style','display:none');
+            }
+        }
+        else {
+            debugger;
+            if(!firstNum.value.match(/[0-9\s]+/)){
+                errorFirstNumElem.innerHTML = "Incorrect data: ";
+                errorFirstNumElem.setAttribute('style', 'display:inline');
+                return false;
+            }
+            else{
+                errorFirstNumElem.setAttribute('style', 'display:none');
+            }
+        }
+        return true;
+    }
+    return{
+        checkValue:checkValue
+    }
+}());
+
 //#region Point_1
 var objSearchElemMas = (function() {
     var getMaxSubSumOn = function (arr) {
@@ -69,35 +113,34 @@ var objSearchElemMas = (function() {
         return outputMas;
     }
 
-    var selectFunctionSearch = function selectFunctionSearch (initialMasElem, selectValue) {
-        if(!initialMasElem.value.match(/[0-9\s]+/)) {
-            initialMasElem.value = "Incorrect Data";
+    var selectFunctionSearch = function selectFunctionSearch (initialMasElem, selectValue,errorMassageElem,resultElem) {
+        if(!errorControl.checkValue(initialMasElem,errorMassageElem,false)){
             return false;
         }
         var initialMas  = initialMasElem.value.split(' ').map(x => +x);
         var outputMas = [];
         if (selectValue == "sumOfElemMasIsMax_O(n)") {
             outputMas = getMaxSubSumOn(initialMas, "Sum");
-            outputMasToInputElem(outputMas, "Sum",initialMasElem);
+            outputMasToInputElem(outputMas, "Sum",resultElem);
         }
         if (selectValue == "sumOfElemMasIsMax_O(n^2)") {
             outputMas = getMaxSubSumSquareOn_2(initialMas);
-            outputMasToInputElem(outputMas, "Sum",initialMasElem);
+            outputMasToInputElem(outputMas, "Sum",resultElem);
         }
         if (selectValue == "searchMaxMinMediumElemMas") {
             outputMas = searchMaxMinMediumElemMas(initialMas);
-            outputMasToInputElem(outputMas, "Min, max, medium",initialMasElem);
+            outputMasToInputElem(outputMas, "Min, max, medium",resultElem);
         }
         if (selectValue == "ascendingSequenceMas") {
             outputMas = searchAscendingSequenceMas(initialMas);
-            outputMasToInputElem(outputMas, "Ascending Sequence",initialMasElem);
+            outputMasToInputElem(outputMas, "Ascending Sequence",resultElem);
         }
     }
 
-    var outputMasToInputElem =  function (arr, str,initialMasEl) {
-        initialMasEl.value = str+ ": ";
+    var outputMasToInputElem =  function (arr, str,resultElem) {
+        resultElem.value = str+ ": ";
         for(var i=0;i<arr.length;i++){
-            initialMasEl.value +=arr[i] + " ";
+            resultElem.value +=arr[i] + " ";
         }
     }
     return{
@@ -184,54 +227,49 @@ var dateFormatter = (function(){
 //#region Point_3
 var textFormatter = (function() {
 
-    var changeTextFormatter = function (inputTextElem, countRowsElem, countCharInStrElem,selectValue) {
-        if (!countRowsElem.value.match(/^\d+$/)) {
-            countRowsElem.value = "Incorrect data";
-            if (!countCharInStrElem.value.match(/^\d+$/)) {
-                countCharInStrElem.value = "Incorrect data";
-            }
+    var changeTextFormatter = function (inputTextElem, countRowsElem, countCharInStrElem,selectValue,errorRows,errorColumn,resultText) {
+        if(!errorControl.checkValue(countRowsElem,errorRows,true,countCharInStrElem, errorColumn)){
             return false;
         }
-        if (!countCharInStrElem.value.match(/^\d+$/)) {
-            countCharInStrElem.value = "Incorrect data";
-            return false
-        }
-        if (selectValue == "charWrap") {
-            inputTextElem.value = outputText(inputTextElem.value.match(/(\w{1})/g).join('\n'),inputTextElem);
-        }
-        if (selectValue == "wordWrap") {
-            inputTextElem.value = outputText(inputTextElem.value.replace(/\s/g, "\n"),inputTextElem)
-        }
-        if (selectValue == "sentenceWrap") {
-            inputTextElem.value = outputText(inputTextElem.value.match(/(\w+.)/g).join('\n'),inputTextElem);
-        }
-        if (selectValue == "withoutWrap") {
-            inputTextElem.setAttribute('wrap', 'off');
+        else{
+            errorColumn.setAttribute('style','display:none');
         }
         var str;
+        if (selectValue == "charWrap") {
+            str = outputText(inputTextElem.value.match(/(\w{1})/g).join('\n'),resultText);
+        }
+        if (selectValue == "wordWrap") {
+            str = outputText(inputTextElem.value.replace(/\s/g, "\n"),resultText)
+        }
+        if (selectValue == "sentenceWrap") {
+            str = outputText(inputTextElem.value.match(/(\w+.)/g).join('\n'),resultText);
+        }
+        if (selectValue == "withoutWrap") {
+            resultText.setAttribute('wrap', 'off');
+        }
         if (countRowsElem.value != undefined && countRowsElem.value != "") {
-            str = inputTextElem.value.split('\n');
+            str = resultText.value.split('\n');
             var outputMas = [];
             if (str.length - countRowsElem.value > 0) {
                 for (var i = 0; i < +countRowsElem.value; i++) {
                     outputMas[i] = str[i];
                 }
-                str = outputText(outputMas.join('\n'),inputTextElem);
+                str = outputText(outputMas.join('\n'),resultText);
             }
             else {
-                str = outputText(str.join('\n'),inputTextElem);
+                str = outputText(str.join('\n'),resultText);
             }
         }
         if (countCharInStrElem.value != undefined && countCharInStrElem.value != "") {
             outputText(str.split(/\n/mg).map(function (e) {
                 return e.substr(0, +countCharInStrElem.value);
-            }).join('\n'),inputTextElem);
+            }).join('\n'),resultText);
         }
     }
 
-    var outputText = function (str,inputTextElem) {
-        inputTextElem.value = "";
-        inputTextElem.value = str;
+    var outputText = function (str,resultText) {
+        resultText.value = "";
+        resultText.value = str;
         return str;
     }
 
@@ -244,16 +282,8 @@ var textFormatter = (function() {
 //#region Point_4
 var calculator =(function(){
 
-    var selectOperation = function (firstNumElem,secondNumElem,selectValue,resultElem) {
-        if(!firstNumElem.value.match(/^\d+$/)){
-            firstNumElem.value = "Incorrect data";
-            if(!secondNumElem.value.match(/^\d+$/)) {
-                secondNumElem.value = "Incorrect data";
-            }
-            return false;
-        }
-        if(!secondNumElem.value.match(/^\d+$/)){
-            secondNumElem.value = "Incorrect data";
+    var selectOperation = function (firstNumElem,secondNumElem,selectValue,resultElem,errorFirstNum,errorSecondNum) {
+        if(!errorControl.checkValue(firstNumElem,errorFirstNum,true,secondNumElem,errorSecondNum)){
             return false;
         }
         firstNumElem =+firstNumElem.value;
@@ -263,11 +293,11 @@ var calculator =(function(){
         if(selectValue =="minus")
             outputResult(minus(firstNumElem, secondNumElem),resultElem);
         if(selectValue =="composition")
-            outputResult(composition(firstNumElem, secondNumElem,resultElem));
+            outputResult(composition(firstNumElem, secondNumElem),resultElem);
         if(selectValue =="division")
-            outputResult(division(firstNumElem, secondNumElem,resultElem));
+            outputResult(division(firstNumElem, secondNumElem),resultElem);
         if(selectValue =="exponentiation")
-            outputResult(exponentiation(firstNumElem, secondNumElem,resultElem));
+            outputResult(exponentiation(firstNumElem, secondNumElem),resultElem);
     }
 
     var add = function (a,b) {
@@ -365,10 +395,8 @@ var objSortMas = (function(){
         return quickSort(left).concat(pivot, quickSort(right));
     }
 
-    var selectFunctionSort = function (initialMasElem,selectValue) {
-
-        if(!initialMasElem.value.match(/[0-9\s]+/)) {
-            initialMasElem.value = "Incorrect Data";
+    var selectFunctionSort = function (initialMasElem,selectValue, errorInitialMas,resultMasSort) {
+        if(!errorControl.checkValue(initialMasElem,errorInitialMas,false)){
             return false;
         }
 
@@ -388,14 +416,14 @@ var objSortMas = (function(){
             if (selectValue == "bubbleSort") {
                 sortMas = bubbleSort(initialMas);
             }
-            outputSortMas(sortMas,initialMasElem);
+            outputSortMas(sortMas,resultMasSort);
         }
     }
 
-    var outputSortMas = function (arr,initialMasElem) {
-        initialMasElem.value = "";
+    var outputSortMas = function (arr,resultMasSort) {
+        resultMasSort.value = "";
         arr.forEach(function (element) {
-            initialMasElem.value +=element + " ";
+            resultMasSort.value +=element + " ";
         });
     }
 
@@ -433,23 +461,22 @@ var binaryOperations = (function() {
         return masValue;
     }
 
-    var selectOperation = function (numElem,selectValue) {
-        if(!numElem.value.match(/^\d+$/)){
-            numElem.value = "Incorrect data";
+    var selectOperation = function (numElem,selectValue,errorNumToConvert,resultConvert) {
+        if(!errorControl.checkValue(numElem,errorNumToConvert,false)){
             return false;
         }
         if(selectValue =="convertToBin"){
-            outputMas(convertToBin(numElem.value),numElem);
+            outputMas(convertToBin(numElem.value),resultConvert);
         }
         if(selectValue == "convertToDesc"){
-            outputMas(convertToDec(numElem.value),numElem);
+            outputMas(convertToDec(numElem.value),resultConvert);
         }
     }
 
-    var outputMas = function (num,numElem) {
-        numElem.value = "";
+    var outputMas = function (num,resultConvert) {
+        resultConvert.value = "";
         for(var i in num)
-            numElem.value += num[i];
+            resultConvert.value += num[i];
     }
 
     return{

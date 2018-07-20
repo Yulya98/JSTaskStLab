@@ -6,22 +6,32 @@ var calculator =(function() {
 
     var cacheFunction ={};
 
-    var callErrorFunction = function(firstNumElem,secondNumElem){
+    var callErrorFunction = function(firstNumElem,secondNumElem,errorFirstNum,errorSecondNum){
         if(!firstNumElem.value.match(/^\d+$/)){
-            firstNumElem.value = "Incorrect data";
-            if(!secondNumElem.value.match(/^\d+$/))
-                secondNumElem.value = "Incorrect data";
+            errorFirstNum.innerHTML = "Incorrect data: ";
+            errorFirstNum.setAttribute('style','display:inline');
+            if(!secondNumElem.value.match(/^\d+$/)) {
+                errorSecondNum.innerHTML = "Incorrect data: ";
+                errorSecondNum.setAttribute('style','display:inline');
+            }
             return false;
         }
-        if(!secondNumElem.value.match(/^\d+$/)) {
-            secondNumElem.value = "Incorrect data";
+        else{
+            errorFirstNum.setAttribute('style','display:none');
+        }
+        if(!secondNumElem.value.match(/^\d+$/)){
+            errorSecondNum.innerHTML = "Incorrect data";
+            errorSecondNum.setAttribute('style','display:none');
             return false;
+        }
+        else {
+            errorSecondNum.setAttribute('style','display:none');
         }
         return true;
     }
 
-    var selectOperation = function (firstNumElem,secondNumElem,selectValue,resultElem) {
-        if(!callErrorFunction(firstNumElem,secondNumElem)){
+    var selectOperation = function (firstNumElem,secondNumElem,selectValue,resultElem,errorFirstElem,errorSecondElem) {
+        if(!callErrorFunction(firstNumElem,secondNumElem,errorFirstElem,errorSecondElem)){
             return false;
         }
         var obj ={};
@@ -122,8 +132,8 @@ var calculator =(function() {
         objSelectElem.options[objSelectElem.options.length] = new Option(str, str);
     }
 
-    var callFunction = function (nameOfFunction,firstNumElem,secondNumElem,resultElem) {
-        if(!callErrorFunction(firstNumElem,secondNumElem)){
+    var callFunction = function (nameOfFunction,firstNumElem,secondNumElem,resultElem,errorFirstElem,errorSecondElem) {
+        if(!callErrorFunction(firstNumElem,secondNumElem,errorFirstElem,errorSecondElem)){
             return false;
         }
         var mas1 = definitionFunction(nameOfFunction,false).split(' ');

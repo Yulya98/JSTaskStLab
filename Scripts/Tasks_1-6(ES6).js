@@ -1,11 +1,55 @@
 
 "use strict";
 
+class ControlValue{
+
+    static checkValue(firstNum,errorFirstNumElem,flagCountValue,secondNum,errorSecondNumElem) {
+        if(flagCountValue == true){
+            debugger;
+            if(!firstNum.value.match(/^\d+$/)){
+                errorFirstNumElem.innerHTML = "Incorrect data: ";
+                errorFirstNumElem.setAttribute('style','display:inline');
+                if(!secondNum.value.match(/^\d+$/)) {
+                    errorSecondNumElem.innerHTML = "Incorrect data: ";
+                    errorSecondNumElem.setAttribute('style','display:inline');
+                }
+                return false;
+            }
+            else{
+                errorFirstNumElem.setAttribute('style','display:none');
+            }
+            if(!secondNum.value.match(/^\d+$/)){
+                errorSecondNumElem.innerHTML = "Incorrect data";
+                errorSecondNumElem.setAttribute('style','display:none');
+                return false;
+            }
+            else {
+                errorSecondNumElem.setAttribute('style','display:none');
+            }
+        }
+        else {
+            debugger;
+            if(!firstNum.value.match(/[0-9\s]+/)){
+                errorFirstNumElem.innerHTML = "Incorrect data: ";
+                errorFirstNumElem.setAttribute('style', 'display:inline');
+                return false;
+            }
+            else{
+                errorFirstNumElem.setAttribute('style', 'display:none');
+            }
+        }
+        return true;
+    }
+}
+
 //#region Point_1
 class SearchElemMas {
 
-    constructor(arr){
+    constructor(arr,selectValue,errorElem,resultElem){
         this.arrElem = arr;
+        this.selectValue = selectValue;
+        this.errorElem= errorElem;
+        this.resultElem = resultElem;
     }
 
 
@@ -85,35 +129,38 @@ class SearchElemMas {
         return outputMas;
     }
 
-    selectFunctionSearch(selectValue) {
-        if(!this.arrElem.value.match(/[0-9\s]+/)) {
-            this.arrElem.value = "Incorrect Data";
+    selectFunctionSearch() {
+        if(!ControlValue.checkValue(this.arrElem,this.errorElem,false)){
             return false;
         }
+        // if(!this.arrElem.value.match(/[0-9\s]+/)) {
+        //     this.arrElem.value = "Incorrect Data";
+        //     return false;
+        // }
         let masFromArr = this.arrElem.value.split(' ').map(x => +x);
         let outputMas = [];
-        if (selectValue == "sumOfElemMasIsMax_O(n)") {
+        if (this.selectValue == "sumOfElemMasIsMax_O(n)") {
             outputMas = SearchElemMas.getMaxSubSumOn(masFromArr, "Sum");
             this.outputMas(outputMas, "Sum");
         }
-        if (selectValue == "sumOfElemMasIsMax_O(n^2)") {
+        if (this.selectValue == "sumOfElemMasIsMax_O(n^2)") {
             outputMas = SearchElemMas.getMaxSubSumSquareOn_2(masFromArr);
             this.outputMas(outputMas, "Sum");
         }
-        if (selectValue == "searchMaxMinMediumElemMas") {
+        if (this.selectValue == "searchMaxMinMediumElemMas") {
             outputMas = SearchElemMas.searchMaxMinMediumElemMas(masFromArr);
             this.outputMas(outputMas, "Min, max, medium");
         }
-        if (selectValue == "ascendingSequenceMas") {
+        if (this.selectValue == "ascendingSequenceMas") {
             outputMas = SearchElemMas.searchAscendingSequenceMas(masFromArr);
             this.outputMas(outputMas, "Ascending Sequence");
         }
     }
 
     outputMas(arr, str) {
-        this.arrElem.value = str+ ": ";
+        this.resultElem.value = str+ ": ";
         for(let value of arr){
-            this.arrElem.value +=value + " ";
+            this.resultElem.value +=value + " ";
         }
     }
 };
@@ -200,24 +247,19 @@ class DateFormatter {
 
 class TextFormatter{
 
-    constructor(maxRows,maxColumns,text,selectValue){
+    constructor(maxRows,maxColumns,text,selectValue,errorRowsCount,errorColumnsCount,textResult){
         this.maxRows = maxRows;
         this.maxColumns = maxColumns;
         this.text = text;
         this.selectValue = selectValue;
+        this.errorRowsCount = errorRowsCount;
+        this.errorColumnsCount = errorColumnsCount;
+        this.textResult = textResult;
     }
 
     changeTextFormatter () {
-        if(!this.maxRows.value.match(/^\d+$/)) {
-            this.maxRows.value = "Incorrect data";
-            if(!this.maxColumns.value.match(/^\d+$/)) {
-                this.maxColumns.value = "Incorrect data";
-            }
+        if(!ControlValue.checkValue(this.maxRows,this.errorRowsCount,true,this.maxColumns,this.errorColumnsCount)){
             return false;
-        }
-        if(!this.maxColumns.value.match(/^\d+$/)) {
-            this.maxColumns.value = "Incorrect data";
-            return false
         }
         if(this.selectValue =="charWrap"){
             this.text.value = this.outputText(this.text.value.match(/(\w{1})/g).join('\n'));
@@ -251,31 +293,34 @@ class TextFormatter{
     }
 
     outputText(str) {
-        this.text.value ="";
-        this.text.value = str;
+        this.textResult.value ="";
+        this.textResult.value = str;
         return str;
     }
-
 };
+
 //#endregion
 
 //#region Point_4
 class Calculator  {
 
-    static selectOperation(a,b,selectValue,resultElem) {
-        if(!a.match(/^\d+$/)){
-            a = "Incorrect data";
-            if(!b.match(/^\d+$/)) {
-                b = "Incorrect data";
-            }
+    static selectOperation(a,b,selectValue,resultElem,errorFirstNum,errorSecondNum) {
+        if(!ControlValue.checkValue(a,errorFirstNum,true,b,errorSecondNum)){
             return false;
         }
-        if(!b.match(/^\d+$/)){
-            b = "Incorrect data";
-            return false;
-        }
-        a=+a;
-        b=+b;
+        // if(!a.match(/^\d+$/)){
+        //     a = "Incorrect data";
+        //     if(!b.match(/^\d+$/)) {
+        //         b = "Incorrect data";
+        //     }
+        //     return false;
+        // }
+        // if(!b.match(/^\d+$/)){
+        //     b = "Incorrect data";
+        //     return false;
+        // }
+        a=+a.value;
+        b=+b.value;
         if(selectValue == "plus")
             Calculator.outputResult(Calculator.add(a, b),resultElem);
         if(selectValue =="minus")
@@ -308,7 +353,7 @@ class Calculator  {
         return Math.pow(a,b);
     }
 
-    static outputResult(result,resultElem ) {
+    static outputResult(result,resultElem) {
         resultElem.value = "";
         resultElem.value = Math.round(result*10000)/10000;
     }
@@ -318,9 +363,11 @@ class Calculator  {
 //#region Point_5
 class SortMas  {
 
-    constructor(arr, selectValue){
+    constructor(arr, selectValue,errorElem,resultElem){
         this.selectValue = selectValue;
         this.arr = arr;
+        this.errorElem=errorElem;
+        this.resultElem = resultElem;
     }
 
     insertionSort(arr) {
@@ -384,11 +431,14 @@ class SortMas  {
     }
 
     selectFunctionSort() {
-
-        if(!this.arr.value.match(/[0-9\s]+/)) {
-            this.arr = "Incorrect Data";
+        if(!ControlValue.checkValue(this.arr,this.errorElem,false)){
             return false;
         }
+
+        // if(!this.arr.value.match(/[0-9\s]+/)) {
+        //     this.arr = "Incorrect Data";
+        //     return false;
+        // }
         let initialMas = this.arr.value.split(' ').map(x=>+x),sortMas;
         if(initialMas !=undefined) {
             if (this.selectValue == "quickSort") {
@@ -408,9 +458,9 @@ class SortMas  {
     }
 
     outputSortMas(arr) {
-        this.arr.value = "";
+        this.resultElem.value = "";
         for(let value of arr) {
-            this.arr.value +=value + " ";
+            this.resultElem.value +=value + " ";
         }
     }
 };
@@ -421,9 +471,11 @@ class SortMas  {
 
 class BinaryOperations {
 
-    constructor(num, selectValue){
+    constructor(num, selectValue,errorElem,resulElem){
         this.num = num;
         this.selectValue = selectValue;
+        this.errorElem = errorElem;
+        this.resulElem = resulElem;
     }
 
     convertToBin(num) {
@@ -450,10 +502,13 @@ class BinaryOperations {
     }
 
     selectOperation() {
-        if(!this.num.value.match(/^\d+$/)){
-            this.num.value = "Incorrect data";
+        if(!ControlValue.checkValue(this.num,this.errorElem,false)){
             return false;
         }
+        // if(!this.num.value.match(/^\d+$/)){
+        //     this.num.value = "Incorrect data";
+        //     return false;
+        // }
         if(this.selectValue =="convertToBin"){
             this.outputMas(this.convertToBin(this.num.value));
         }
