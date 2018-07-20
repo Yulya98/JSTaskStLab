@@ -69,35 +69,35 @@ var objSearchElemMas = (function() {
         return outputMas;
     }
 
-    var selectFunctionSearch = function selectFunctionSearch () {
-        if(!document.getElementById('initialMasForSearch').value.match(/[0-9\s]+/)) {
-            document.getElementById('initialMasForSearch').value = "Incorrect Data";
+    var selectFunctionSearch = function selectFunctionSearch (initialMasElem, selectValue) {
+        if(!initialMasElem.value.match(/[0-9\s]+/)) {
+            initialMasElem.value = "Incorrect Data";
             return false;
         }
-        var initialMas = document.getElementById('initialMasForSearch').value.split(' ').map(x => +x);
-        var outputMas = [],selectItem = document.getElementById('s3').value;
-        if (selectItem == "sumOfElemMasIsMax_O(n)") {
+        var initialMas  = initialMasElem.value.split(' ').map(x => +x);
+        var outputMas = [];
+        if (selectValue == "sumOfElemMasIsMax_O(n)") {
             outputMas = getMaxSubSumOn(initialMas, "Sum");
-            outputMasToInputElem(outputMas, "Sum");
+            outputMasToInputElem(outputMas, "Sum",initialMasElem);
         }
-        if (selectItem == "sumOfElemMasIsMax_O(n^2)") {
+        if (selectValue == "sumOfElemMasIsMax_O(n^2)") {
             outputMas = getMaxSubSumSquareOn_2(initialMas);
-            outputMasToInputElem(outputMas, "Sum");
+            outputMasToInputElem(outputMas, "Sum",initialMasElem);
         }
-        if (selectItem == "searchMaxMinMediumElemMas") {
+        if (selectValue == "searchMaxMinMediumElemMas") {
             outputMas = searchMaxMinMediumElemMas(initialMas);
-            outputMasToInputElem(outputMas, "Min, max, medium");
+            outputMasToInputElem(outputMas, "Min, max, medium",initialMasElem);
         }
-        if (selectItem == "ascendingSequenceMas") {
+        if (selectValue == "ascendingSequenceMas") {
             outputMas = searchAscendingSequenceMas(initialMas);
-            outputMasToInputElem(outputMas, "Ascending Sequence");
+            outputMasToInputElem(outputMas, "Ascending Sequence",initialMasElem);
         }
     }
 
-    var outputMasToInputElem =  function (arr, str) {
-        document.getElementById('initialMasForSearch').value = str+ ": ";
+    var outputMasToInputElem =  function (arr, str,initialMasEl) {
+        initialMasEl.value = str+ ": ";
         for(var i=0;i<arr.length;i++){
-            document.getElementById('initialMasForSearch').value +=arr[i] + " ";
+            initialMasEl.value +=arr[i] + " ";
         }
     }
     return{
@@ -109,70 +109,69 @@ var objSearchElemMas = (function() {
 //#region Point_2
 var dateFormatter = (function(){
 
-    var selectParseTemplate = function () {
-        var selectValue = document.getElementById('s1').value;
+    var selectParseTemplate = function (initialDateElem, selectValue) {
         if (selectValue == "simpleStr") {
-            outputDate(parseFunctionReturnStr("DDMMYYYY", "YY-MM-DD"));
+            outputDate(parseFunctionReturnStr("DDMMYYYY", "YY-MM-DD",initialDateElem),initialDateElem);
         }
         if (selectValue == "simpleStrMonthToStr") {
-            outputDate(parseFunctionReturnStr("DDMMYYYY", "YYYYMMDD"));
+            outputDate(parseFunctionReturnStr("DDMMYYYY", "YYYYMMDD", initialDateElem),initialDateElem);
         }
         if (selectValue == "simpleStrToDateObject") {
-            outputDate(parseFunctionReturnStr("YYYYMMDD", "YYYYMMDD"));
+            outputDate(parseFunctionReturnStr("YYYYMMDD", "YYYYMMDD",initialDateElem),initialDateElem);
         }
         if (selectValue == "simpleStrToDateObjectHyphenated") {
-            outputDate(parseFunctionReturnStr("YYYYMMDD", "YYYYMMDD", "MM-DD-YYYY"));
+            outputDate(parseFunctionReturnStr("YYYYMMDD", "YYYYMMDD",initialDateElem, "MM-DD-YYYY"),initialDateElem);
         }
         if (selectValue == "fromNow") {
-            outputDate(parseFunctionReturnStr("YYYY-MM-DD", "YYYY-MM-DD"));
+            outputDate(parseFunctionReturnStr("YYYY-MM-DD", "YYYY-MM-DD",initialDateElem),initialDateElem);
         }
         if (selectValue == "MStoDate") {
-            outputDate(parseFunctionReturnStr("MS"));
+            outputDate(parseFunctionReturnStr("MS","",initialDateElem),initialDateElem);
         }
         if (selectValue == "DateToMS") {
-            outputDate(parseFunctionReturnStr("DateToMS"));
+            outputDate(parseFunctionReturnStr("DateToMS","",initialDateElem),initialDateElem);
         }
     }
 
-   var parseFunctionReturnStr = function (inputStr, regExp, regExp_2) {
-        var date , initialDate = document.getElementById("date").value,masValueForBuildDate = [];
+    var parseFunctionReturnStr = function (inputStrFormat, regExp,initialDateElem, regExp_2) {
+        var date ,masValueForBuildDate = [];
         var locale = "en-us";
-        if (inputStr == "DDMMYYYY" && regExp == "YY-MM-DD" && typeof regExp_2 == "undefined") {
-            return initialDate.replace(/([0-9]{2})([0-9]{2})([0-9]{4})/, '$1-$2-$3');
+        if (inputStrFormat == "DDMMYYYY" && regExp == "YY-MM-DD" && typeof regExp_2 == "undefined") {
+            return initialDateElem.value.replace(/([0-9]{2})([0-9]{2})([0-9]{4})/, '$1-$2-$3');
         }
-        if (inputStr == "DDMMYYYY" && regExp == "YYYYMMDD" && typeof regExp_2 == "undefined") {
-            masValueForBuildDate = initialDate.replace(/([0-9]{2})([0-9]{2})([0-9]{4})/, '$1,$2,$3').split(',').map(x => +x);
+        if (inputStrFormat == "DDMMYYYY" && regExp == "YYYYMMDD" && typeof regExp_2 == "undefined") {
+            masValueForBuildDate = initialDateElem.value.replace(/([0-9]{2})([0-9]{2})([0-9]{4})/, '$1,$2,$3').split(',').map(x => +x);
             date = new Date(masValueForBuildDate[2], masValueForBuildDate[1] - 1, masValueForBuildDate[0]);
             return date.getDate() + " " + date.toLocaleString(locale, {month: "long"}) + " " + date.getFullYear();
         }
-        if (inputStr == "YYYYMMDD" && regExp == "YYYYMMDD" && typeof regExp_2 == "undefined") {
-            masValueForBuildDate = initialDate.replace(/([0-9]{4})([0-9]{2})([0-9]{2})/, '$1,$2,$3').split(',').map(x => +x);
+        if (inputStrFormat == "YYYYMMDD" && regExp == "YYYYMMDD" && typeof regExp_2 == "undefined") {
+            masValueForBuildDate = initialDateElem.value.replace(/([0-9]{4})([0-9]{2})([0-9]{2})/, '$1,$2,$3').split(',').map(x => +x);
             date = new Date(masValueForBuildDate[0], masValueForBuildDate[1] - 1, masValueForBuildDate[2]);
             return date.getDate() + " " + date.toLocaleString(locale, {month: "long"}) + " " + date.getFullYear();
         }
-        if (inputStr == "YYYYMMDD" && regExp == "YYYYMMDD" && regExp_2 == "MM-DD-YYYY") {
-            return initialDate.replace(/([0-9]{4})([0-9]{2})([0-9]{2})/, '$2-$3-$1');
+        if (inputStrFormat == "YYYYMMDD" && regExp == "YYYYMMDD" && regExp_2 == "MM-DD-YYYY") {
+            return initialDateElem.value.replace(/([0-9]{4})([0-9]{2})([0-9]{2})/, '$2-$3-$1');
         }
-        if (inputStr == "YYYY-MM-DD" && regExp == "YYYY-MM-DD" && typeof regExp_2 == "undefined") {
-            masValueForBuildDate = initialDate.replace(/([0-9]{4})-([0-9]{2})-([0-9]{2})/, '$1,$2,$3').split(',').map(x => +x);
+        if (inputStrFormat == "YYYY-MM-DD" && regExp == "YYYY-MM-DD" && typeof regExp_2 == "undefined") {
+            masValueForBuildDate = initialDateElem.value.replace(/([0-9]{4})-([0-9]{2})-([0-9]{2})/, '$1,$2,$3').split(',').map(x => +x);
             var b = new Date(masValueForBuildDate[0], masValueForBuildDate[1] - 1, masValueForBuildDate[2]).getTime();
             var diff = Math.floor(Date.now() - b);
             return Math.floor(diff / (1000 * 60 * 60 * 24) / 31 / 12) + " years ago";
         }
-        if (inputStr == "MS") {
-            date = new Date(+initialDate);
+        if (inputStrFormat == "MS") {
+            date = new Date(+initialDateElem.value);
             return date;
         }
-        if (inputStr == "DateToMS") {
-            masValueForBuildDate = initialDate.replace(/([0-9]{4})-([0-9]{2})-([0-9]{2})/, '$1,$2,$3').split(',').map(x => +x);
+        if (inputStrFormat == "DateToMS") {
+            masValueForBuildDate = initialDateElem.value.replace(/([0-9]{4})-([0-9]{2})-([0-9]{2})/, '$1,$2,$3').split(',').map(x => +x);
             date = new Date(masValueForBuildDate[0], masValueForBuildDate[1] - 1, masValueForBuildDate[2]).getTime();
             return date;
         }
     }
 
-    var outputDate = function(date) {
-        document.getElementById("date").value ="";
-        document.getElementById("date").value = date;
+    var outputDate = function(date,initialDateElem) {
+        initialDateElem.value ="";
+        initialDateElem.value = date;
     }
 
     return{
@@ -185,56 +184,54 @@ var dateFormatter = (function(){
 //#region Point_3
 var textFormatter = (function() {
 
-    var changeTextFormatter = function (str, countRows, countCharInStr) {
-        if (!countRows.match(/^\d+$/)) {
-            document.getElementById('maxRows').value = "Incorrect data";
-            if (!countCharInStr.match(/^\d+$/)) {
-                document.getElementById('maxColumns').value = "Incorrect data";
+    var changeTextFormatter = function (inputTextElem, countRowsElem, countCharInStrElem,selectValue) {
+        if (!countRowsElem.value.match(/^\d+$/)) {
+            countRowsElem.value = "Incorrect data";
+            if (!countCharInStrElem.value.match(/^\d+$/)) {
+                countCharInStrElem.value = "Incorrect data";
             }
             return false;
         }
-        if (!countCharInStr.match(/^\d+$/)) {
-            document.getElementById('maxColumns').value = "Incorrect data";
+        if (!countCharInStrElem.value.match(/^\d+$/)) {
+            countCharInStrElem.value = "Incorrect data";
             return false
         }
-
-        var textareaObj = document.getElementById("test");
-        var selectValue = document.getElementById('s6').value;
         if (selectValue == "charWrap") {
-            str = outputText(str.match(/(\w{1})/g).join('\n'));
+            inputTextElem.value = outputText(inputTextElem.value.match(/(\w{1})/g).join('\n'),inputTextElem);
         }
         if (selectValue == "wordWrap") {
-            str = outputText(str.replace(/\s/g, "\n"))
+            inputTextElem.value = outputText(inputTextElem.value.replace(/\s/g, "\n"),inputTextElem)
         }
         if (selectValue == "sentenceWrap") {
-            str = outputText(str.match(/(\w+.)/g).join('\n'));
+            inputTextElem.value = outputText(inputTextElem.value.match(/(\w+.)/g).join('\n'),inputTextElem);
         }
         if (selectValue == "withoutWrap") {
-            textareaObj.setAttribute('wrap', 'off');
+            inputTextElem.setAttribute('wrap', 'off');
         }
-        if (countRows != undefined && countRows != "") {
-            str = str.split('\n');
+        var str;
+        if (countRowsElem.value != undefined && countRowsElem.value != "") {
+            str = inputTextElem.value.split('\n');
             var outputMas = [];
-            if (str.length - countRows > 0) {
-                for (var i = 0; i < countRows; i++) {
+            if (str.length - countRowsElem.value > 0) {
+                for (var i = 0; i < +countRowsElem.value; i++) {
                     outputMas[i] = str[i];
                 }
-                str = outputText(outputMas.join('\n'));
+                str = outputText(outputMas.join('\n'),inputTextElem);
             }
             else {
-                str = outputText(str.join('\n'));
+                str = outputText(str.join('\n'),inputTextElem);
             }
         }
-        if (countCharInStr != undefined && countCharInStr != "") {
+        if (countCharInStrElem.value != undefined && countCharInStrElem.value != "") {
             outputText(str.split(/\n/mg).map(function (e) {
-                return e.substr(0, countCharInStr);
-            }).join('\n'));
+                return e.substr(0, +countCharInStrElem.value);
+            }).join('\n'),inputTextElem);
         }
     }
 
-    var outputText = function (str) {
-        document.getElementById("test").value = "";
-        document.getElementById("test").value = str;
+    var outputText = function (str,inputTextElem) {
+        inputTextElem.value = "";
+        inputTextElem.value = str;
         return str;
     }
 
@@ -247,33 +244,30 @@ var textFormatter = (function() {
 //#region Point_4
 var calculator =(function(){
 
-    var selectOperation = function () {
-        var firstNum =document.getElementById("firstNum").value;
-        var secondNum =document.getElementById("secondNum").value;
-        if(!firstNum.match(/^\d+$/)){
-            document.getElementById("firstNum").value = "Incorrect data";
-            if(!secondNum.match(/^\d+$/)) {
-                document.getElementById("secondNum").value = "Incorrect data";
+    var selectOperation = function (firstNumElem,secondNumElem,selectValue,resultElem) {
+        if(!firstNumElem.value.match(/^\d+$/)){
+            firstNumElem.value = "Incorrect data";
+            if(!secondNumElem.value.match(/^\d+$/)) {
+                secondNumElem.value = "Incorrect data";
             }
             return false;
         }
-        if(!secondNum.match(/^\d+$/)){
-            document.getElementById("secondNum").value = "Incorrect data";
+        if(!secondNumElem.value.match(/^\d+$/)){
+            secondNumElem.value = "Incorrect data";
             return false;
         }
-        firstNum =+document.getElementById("firstNum").value;
-        secondNum =document.getElementById("secondNum").value;
-        var selectValue = document.getElementById('s5').value;
+        firstNumElem =+firstNumElem.value;
+        secondNumElem =+secondNumElem.value;
         if(selectValue == "plus")
-            outputResult(add(firstNum, secondNum));
+            outputResult(add(firstNumElem, secondNumElem),resultElem);
         if(selectValue =="minus")
-            outputResult(minus(firstNum, secondNum))
+            outputResult(minus(firstNumElem, secondNumElem),resultElem);
         if(selectValue =="composition")
-            outputResult(composition(firstNum, secondNum));
+            outputResult(composition(firstNumElem, secondNumElem,resultElem));
         if(selectValue =="division")
-            outputResult(division(firstNum, secondNum));
+            outputResult(division(firstNumElem, secondNumElem,resultElem));
         if(selectValue =="exponentiation")
-            outputResult(exponentiation(firstNum, secondNum));
+            outputResult(exponentiation(firstNumElem, secondNumElem,resultElem));
     }
 
     var add = function (a,b) {
@@ -296,9 +290,9 @@ var calculator =(function(){
         return Math.pow(a,b);
     }
 
-    var outputResult = function (result) {
-        document.getElementById("result").value = "";
-        document.getElementById("result").value = Math.round(result*10000)/10000;
+    var outputResult = function (result,resultElem) {
+        resultElem.value = "";
+        resultElem.value = Math.round(result*10000)/10000;
     }
 
     return{
@@ -371,15 +365,14 @@ var objSortMas = (function(){
         return quickSort(left).concat(pivot, quickSort(right));
     }
 
-    var selectFunctionSort = function () {
+    var selectFunctionSort = function (initialMasElem,selectValue) {
 
-        if(!document.getElementById('initialMasForSort').value.match(/[0-9\s]+/)) {
-            document.getElementById('initialMasForSort').value = "Incorrect Data";
+        if(!initialMasElem.value.match(/[0-9\s]+/)) {
+            initialMasElem.value = "Incorrect Data";
             return false;
         }
 
-        var selectValue=document.getElementById('s2').value;
-        var initialMas = document.getElementById("initialMasForSort").value.split(' ').map(function (value) { return +value; });
+        var initialMas = initialMasElem.value.split(' ').map(function (value) { return +value; });
         var sortMas;
 
         if(initialMas !=undefined) {
@@ -395,14 +388,14 @@ var objSortMas = (function(){
             if (selectValue == "bubbleSort") {
                 sortMas = bubbleSort(initialMas);
             }
-            outputSortMas(sortMas);
+            outputSortMas(sortMas,initialMasElem);
         }
     }
 
-    var outputSortMas = function (arr) {
-        document.getElementById('initialMasForSort').value = "";
+    var outputSortMas = function (arr,initialMasElem) {
+        initialMasElem.value = "";
         arr.forEach(function (element) {
-            document.getElementById('initialMasForSort').value +=element + " ";
+            initialMasElem.value +=element + " ";
         });
     }
 
@@ -440,24 +433,23 @@ var binaryOperations = (function() {
         return masValue;
     }
 
-    var selectOperation = function (num) {
-        if(!num.match(/^\d+$/)){
-            document.getElementById('numToConvert').value = "Incorrect data";
+    var selectOperation = function (numElem,selectValue) {
+        if(!numElem.value.match(/^\d+$/)){
+            numElem.value = "Incorrect data";
             return false;
         }
-        var selectValue = document.getElementById('s7').value;
         if(selectValue =="convertToBin"){
-            outputMas(convertToBin(num));
+            outputMas(convertToBin(numElem.value),numElem);
         }
         if(selectValue == "convertToDesc"){
-            outputMas(convertToDec(num));
+            outputMas(convertToDec(numElem.value),numElem);
         }
     }
 
-    var outputMas = function (num) {
-        document.getElementById('numToConvert').value = "";
+    var outputMas = function (num,numElem) {
+        numElem.value = "";
         for(var i in num)
-            document.getElementById('numToConvert').value += num[i];
+            numElem.value += num[i];
     }
 
     return{

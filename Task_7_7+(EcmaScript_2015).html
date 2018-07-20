@@ -21,10 +21,10 @@
         <option value="division">/</option>
         <option value="exponentiation">^</option>
     </select>
-    <input type="button" onclick="calculator.selectOperation()" value="Call built-in function">
+    <input type="button" onclick="calculator.selectOperation(document.getElementById('firstNum'),document.getElementById('secondNum'),document.getElementById('s5').value, document.getElementById('result'))" value="Call built-in function">
     <select name="town" id="s7">
     </select>
-    <input type="button" onclick="calculator.callFunction(new Array(document.getElementById('s7').value))" value="Call custom function">
+    <input type="button" onclick="calculator.callFunction(new Array(document.getElementById('s7').value),document.getElementById('firstNum'), document.getElementById('secondNum'),document.getElementById('result'))" value="Call custom function">
 </form>
 </br>
 <form name="f4">
@@ -34,7 +34,7 @@
 <br>
 <form>
     <input type="text" id="newFunction">
-    <input type="button" onclick="calculator.f(document.getElementById('newFunction').value.split(' '),true)" value="Definition new function">
+    <input type="button" onclick="calculator.f(document.getElementById('newFunction').value.split(' '),true, document.getElementById('s7'))" value="Definition new function">
 </form>
 </br>
 </body>

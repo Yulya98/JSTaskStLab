@@ -8,47 +8,46 @@ class Calculator {
         this.cacheValue = cacheValue;
     }
 
-    static callErrorFunction(){
-        if(!document.getElementById("firstNum").value.match(/^\d+$/)){
-            document.getElementById("firstNum").value = "Incorrect data";
-            if(!document.getElementById("secondNum").value.match(/^\d+$/))
-                document.getElementById("secondNum").value = "Incorrect data";
+    static callErrorFunction(firstNumElem,SecondNumElem){
+        if(!firstNumElem.value.match(/^\d+$/)){
+            firstNumElem.value = "Incorrect data";
+            if(!SecondNumElem.value.match(/^\d+$/))
+                SecondNumElem.value = "Incorrect data";
             return false;
         }
-        if(!document.getElementById("secondNum").value.match(/^\d+$/)) {
-            document.getElementById("secondNum").value = "Incorrect data";
+        if(!SecondNumElem.value.match(/^\d+$/)) {
+            SecondNumElem.value = "Incorrect data";
             return false;
         }
         return true;
     }
 
-    selectOperation() {
-        if(!Calculator.callErrorFunction()){
+    selectOperation(firstNum,secondNum,selectValue,resultElem) {
+        if(!Calculator.callErrorFunction(firstNum,secondNum)){
             return false;
         }
-        let selectValue = document.getElementById('s5').value;
         let obj ={};
-        obj[1] = +document.getElementById("firstNum").value;
-        obj[2] =+document.getElementById("secondNum").value;
+        obj[1] = +firstNum.value;
+        obj[2] =+secondNum.value;
         if(selectValue == "plus") {
             obj[0]="add"
-            Calculator.outputResult(Calculator.add(obj));
+            Calculator.outputResult(Calculator.add(obj),resultElem);
         }
         if(selectValue =="minus"){
             obj[0] ="minus";
-            Calculator.outputResult(Calculator.minus(obj));
+            Calculator.outputResult(Calculator.minus(obj),resultElem);
         }
         if(selectValue ==="composition") {
             obj[0] ="composition";
-            Calculator.outputResult(Calculator.composition(obj));
+            Calculator.outputResult(Calculator.composition(obj),resultElem);
         }
         if(selectValue =="division") {
             obj[0] ="division";
-            Calculator.outputResult(Calculator.division(obj));
+            Calculator.outputResult(Calculator.division(obj),resultElem);
         }
         if(selectValue =="exponentiation") {
             obj[0] ="exponentiation";
-            Calculator.outputResult(Calculator.exponentiation(obj));
+            Calculator.outputResult(Calculator.exponentiation(obj),resultElem);
         }
     }
 
@@ -72,9 +71,9 @@ class Calculator {
         return Math.pow(obj[1],obj[2]);
     }
 
-    static outputResult(result) {
-        document.getElementById("result").value = "";
-        document.getElementById("result").value = Math.round(result*10000)/10000;
+    static outputResult(result,resultElem) {
+        resultElem.value = "";
+        resultElem.value = Math.round(result*10000)/10000;
     }
 
     makeCachingValue(f,cache) {
@@ -98,30 +97,29 @@ class Calculator {
 
         this.cacheFunctions = cacheFunctions;
 
-        return function (obj,flag) {
+        return function (obj,flag,objSelectElem) {
             if (!(obj[0] in this.cacheFunctions)) {
-                this.cacheFunctions[obj[0]] = f.call(this, obj,flag);
+                this.cacheFunctions[obj[0]] = f.call(this, obj,flag,objSelectElem);
             }
             return this.cacheFunctions[obj[0]];
 
         };
     }
 
-    definitionFunction(obj,flag) {
+    definitionFunction(obj,flag,objSelectElem) {
         if(flag == true) {
-            Calculator.addNewOption(obj[0]);
+            Calculator.addNewOption(obj[0],objSelectElem);
         }
         let mas =[obj[1],obj[2],obj[3]];
         return mas.join(' ');
     }
 
-    static addNewOption(str){
-        let objSel = document.getElementById("s7");
-        objSel.options[objSel.options.length] = new Option(str, str);
+    static addNewOption(str,objSelectElem){
+        objSelectElem.options[objSelectElem.options.length] = new Option(str, str);
     }
 
-    callFunction(str) {
-        if(!Calculator.callErrorFunction()){
+    callFunction(str,firstNumElem,secondNumElem,resultElem) {
+        if(!Calculator.callErrorFunction(firstNumElem,secondNumElem)){
             return false;
         }
         let mas1 = Singleton.getInstance().definitionFunction(str,false).split(' ');
@@ -129,9 +127,9 @@ class Calculator {
         newFunc = this.makeCachingValue(newFunc,this.cacheValue);
         let obj ={};
         obj[0] = str[0];
-        obj[1] = +document.getElementById("firstNum").value;
-        obj[2] = +document.getElementById("secondNum").value;
-        Calculator.outputResult(newFunc(obj));
+        obj[1] = +firstNumElem.value;
+        obj[2] = +secondNumElem.value;
+        Calculator.outputResult(newFunc(obj),resultElem);
     }
 };
 

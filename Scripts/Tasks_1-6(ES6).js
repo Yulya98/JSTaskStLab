@@ -40,7 +40,7 @@ class SearchElemMas {
 
     static searchMaxMinMediumElemMas (arr) {
         let masMinMaxMediumElemMas = [], minEl,maxEl,mediumEl;
-        arr = new SortMas().quickSort(arr);
+        arr = objSortMas.quickSort(arr);
         minEl = arr[0];
         maxEl = arr[arr.length-1];
         if(arr.length%2 ==0){
@@ -85,27 +85,26 @@ class SearchElemMas {
         return outputMas;
     }
 
-    selectFunctionSearch() {
+    selectFunctionSearch(selectValue) {
         if(!this.arrElem.value.match(/[0-9\s]+/)) {
             this.arrElem.value = "Incorrect Data";
             return false;
         }
         let masFromArr = this.arrElem.value.split(' ').map(x => +x);
         let outputMas = [];
-        let selectItem = document.getElementById('s3').value;
-        if (selectItem == "sumOfElemMasIsMax_O(n)") {
+        if (selectValue == "sumOfElemMasIsMax_O(n)") {
             outputMas = SearchElemMas.getMaxSubSumOn(masFromArr, "Sum");
             this.outputMas(outputMas, "Sum");
         }
-        if (selectItem == "sumOfElemMasIsMax_O(n^2)") {
+        if (selectValue == "sumOfElemMasIsMax_O(n^2)") {
             outputMas = SearchElemMas.getMaxSubSumSquareOn_2(masFromArr);
             this.outputMas(outputMas, "Sum");
         }
-        if (selectItem == "searchMaxMinMediumElemMas") {
+        if (selectValue == "searchMaxMinMediumElemMas") {
             outputMas = SearchElemMas.searchMaxMinMediumElemMas(masFromArr);
             this.outputMas(outputMas, "Min, max, medium");
         }
-        if (selectItem == "ascendingSequenceMas") {
+        if (selectValue == "ascendingSequenceMas") {
             outputMas = SearchElemMas.searchAscendingSequenceMas(masFromArr);
             this.outputMas(outputMas, "Ascending Sequence");
         }
@@ -121,7 +120,7 @@ class SearchElemMas {
 //#endregion
 
 //#region Point_2
-class dateFormatter {
+class DateFormatter {
 
     constructor(initialDateElem,selectValue){
         this.initialDateElem = initialDateElem;
@@ -263,7 +262,7 @@ class TextFormatter{
 //#region Point_4
 class Calculator  {
 
-    static selectOperation(a,b,selectValue) {
+    static selectOperation(a,b,selectValue,resultElem) {
         if(!a.match(/^\d+$/)){
             a = "Incorrect data";
             if(!b.match(/^\d+$/)) {
@@ -278,15 +277,15 @@ class Calculator  {
         a=+a;
         b=+b;
         if(selectValue == "plus")
-            Calculator.outputResult(Calculator.add(a, b));
+            Calculator.outputResult(Calculator.add(a, b),resultElem);
         if(selectValue =="minus")
-            Calculator.outputResult(Calculator.minus(a, b))
+            Calculator.outputResult(Calculator.minus(a, b),resultElem)
         if(selectValue =="composition")
-            Calculator.outputResult(Calculator.composition(a, b));
+            Calculator.outputResult(Calculator.composition(a, b),resultElem);
         if(selectValue =="division")
-            Calculator.outputResult(Calculator.division(a, b));
+            Calculator.outputResult(Calculator.division(a, b),resultElem);
         if(selectValue =="exponentiation")
-            Calculator.outputResult(Calculator.exponentiation(a, b));
+            Calculator.outputResult(Calculator.exponentiation(a, b),resultElem);
     }
 
     static add (a,b) {
@@ -309,9 +308,9 @@ class Calculator  {
         return Math.pow(a,b);
     }
 
-    static outputResult(result) {
-        document.getElementById("result").value = "";
-        document.getElementById("result").value = Math.round(result*10000)/10000;
+    static outputResult(result,resultElem ) {
+        resultElem.value = "";
+        resultElem.value = Math.round(result*10000)/10000;
     }
 };
 //#endregion

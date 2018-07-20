@@ -15,7 +15,7 @@
         <option value="searchMaxMinMediumElemMas">Search max min medium elements of array</option>
         <option value="ascendingSequenceMas">Ascending sequence of array</option>
     </select>
-    <input type="button" onclick="new SearchElemMas(document.getElementById('initialMasForSearch')).selectFunctionSearch()" value="ok">
+    <input type="button" onclick="new SearchElemMas(document.getElementById('initialMasForSearch')).selectFunctionSearch(document.getElementById('s3').value)" value="ok">
 </form>
 </br>
 <br><label>Task 2)</label></br>
@@ -31,7 +31,7 @@
         <option value="MStoDate">MS to Date(YYYY-MM-DD)</option>
         <option value="DateToMS">Date to MS</option>
     </select>
-    <input type="button" onclick="new dateFormatter(document.getElementById('date'), document.getElementById('s1').value).selectParseTemplate()" value="ok">
+    <input type="button" onclick="new DateFormatter(document.getElementById('date'), document.getElementById('s1').value).selectParseTemplate()" value="ok">
 </form>
 </br>
 <br><label>Task 3)</label></br>
@@ -63,7 +63,7 @@
         <option value="division">/</option>
         <option value="exponentiation">^</option>
     </select>
-    <input type="button" onclick="Calculator.selectOperation(document.getElementById('firstNum').value, document.getElementById('secondNum').value, document.getElementById('s5').value)" value="ok">
+    <input type="button" onclick="Calculator.selectOperation(document.getElementById('firstNum').value, document.getElementById('secondNum').value, document.getElementById('s5').value,document.getElementById('result'))" value="ok">
     </br>
 </form>
 </br>

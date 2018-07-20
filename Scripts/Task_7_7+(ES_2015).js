@@ -6,47 +6,46 @@ var calculator =(function() {
 
     var cacheFunction ={};
 
-    var callErrorFunction = function(){
-        if(!document.getElementById("firstNum").value.match(/^\d+$/)){
-            document.getElementById("firstNum").value = "Incorrect data";
-            if(!document.getElementById("secondNum").value.match(/^\d+$/))
-                document.getElementById("secondNum").value = "Incorrect data";
+    var callErrorFunction = function(firstNumElem,secondNumElem){
+        if(!firstNumElem.value.match(/^\d+$/)){
+            firstNumElem.value = "Incorrect data";
+            if(!secondNumElem.value.match(/^\d+$/))
+                secondNumElem.value = "Incorrect data";
             return false;
         }
-        if(!document.getElementById("secondNum").value.match(/^\d+$/)) {
-            document.getElementById("secondNum").value = "Incorrect data";
+        if(!secondNumElem.value.match(/^\d+$/)) {
+            secondNumElem.value = "Incorrect data";
             return false;
         }
         return true;
     }
 
-    var selectOperation = function () {
-        if(!callErrorFunction()){
+    var selectOperation = function (firstNumElem,secondNumElem,selectValue,resultElem) {
+        if(!callErrorFunction(firstNumElem,secondNumElem)){
             return false;
         }
-        var selectValue = document.getElementById('s5').value;
         var obj ={};
-        obj[1] = +document.getElementById("firstNum").value;
-        obj[2] =+document.getElementById("secondNum").value;
+        obj[1] = +firstNumElem.value;
+        obj[2] =+secondNumElem.value;
         if(selectValue == "plus") {
             obj[0]="add"
-            outputResult(add(obj));
+            outputResult(add(obj),resultElem);
         }
         if(selectValue =="minus"){
             obj[0] ="minus";
-            outputResult(minus(obj));
+            outputResult(minus(obj),resultElem);
         }
         if(selectValue ==="composition") {
             obj[0] ="composition";
-            outputResult(composition(obj));
+            outputResult(composition(obj),resultElem);
         }
         if(selectValue =="division") {
             obj[0] ="division";
-            outputResult(division(obj));
+            outputResult(division(obj),resultElem);
         }
         if(selectValue =="exponentiation") {
             obj[0] ="exponentiation";
-            outputResult(exponentiation(obj));
+            outputResult(exponentiation(obj),resultElem);
         }
     }
 
@@ -70,22 +69,19 @@ var calculator =(function() {
         return Math.pow(obj[1],obj[2]);
     }
 
-    var outputResult = function (result) {
-        document.getElementById("result").value = "";
-        document.getElementById("result").value = Math.round(result*10000)/10000;
+    var outputResult = function (result, resultElem) {
+        resultElem.value = "";
+        resultElem.value = Math.round(result*10000)/10000;
     }
 
     var makeCachingValue = function (f,cache) {
-        debugger;
         this.cacheValue = cache;
 
         return function (obj){
-            debugger;
             if(!((obj[0]+obj[1]+obj[2] in this.cacheValue) || (obj[0]+obj[2]+obj[1] in this.cacheValue) && obj[0]=="exponentiation")){
                 this.cacheValue[obj[0]+obj[1]+obj[2]] = f.call(this,obj);
             }
             if(obj[0] == "exponentiation"){
-                debugger;
                 if(!(obj[0]+obj[1]+obj[2] in this.cacheValue)){
                     this.cacheValue[obj[0]+obj[1]+obj[2]] = f.call(this,obj);
                 }
@@ -96,49 +92,48 @@ var calculator =(function() {
     }
 
     var definitionFunctionCache = function (f,cacheFunctions) {
-        debugger;
 
         this.cacheFunctions = cacheFunctions;
 
-        return function (obj,flag) {
-            debugger;
+        return function (obj,flag,objSelectElem) {
             if (!(obj[0] in this.cacheFunctions)) {
-                this.cacheFunctions[obj[0]] = f.call(this, obj,flag);
+                this.cacheFunctions[obj[0]] = f.call(this, obj,flag,objSelectElem);
             }
             return this.cacheFunctions[obj[0]];
 
         };
     }
 
-    var definitionFunction = function (obj,flag) {
+    var definitionFunction = function (obj,flag,objSelectElem) {
+        debugger;
         if(flag == true) {
-            addNewOption(obj[0]);
+            addNewOption(obj[0],objSelectElem);
         }
         var mas =[obj[1],obj[2],obj[3]];
         return mas.join(' ');
     }
 
-    var f = function (obj,flag) {
-        definitionFunction(obj,flag);
+    var f = function (obj,flag,objSelectElem) {
+        debugger;
+        definitionFunction(obj,flag,objSelectElem);
     }
 
-    var addNewOption = function(str){
-        var objSel = document.getElementById("s7");
-        objSel.options[objSel.options.length] = new Option(str, str);
+    var addNewOption = function(str,objSelectElem){
+        objSelectElem.options[objSelectElem.options.length] = new Option(str, str);
     }
 
-    var callFunction = function (str) {
-        if(!callErrorFunction()){
+    var callFunction = function (nameOfFunction,firstNumElem,secondNumElem,resultElem) {
+        if(!callErrorFunction(firstNumElem,secondNumElem)){
             return false;
         }
-        var mas1 = definitionFunction(str,false).split(' ');
+        var mas1 = definitionFunction(nameOfFunction,false).split(' ');
         var newFunc = new Function(mas1[0],mas1[1]+" "+mas1[2]);
         newFunc = makeCachingValue(newFunc,cacheValue);
         var obj ={};
-        obj[0] = str[0];
-        obj[1] = +document.getElementById("firstNum").value;
-        obj[2] = +document.getElementById("secondNum").value;
-        outputResult(newFunc(obj));
+        obj[0] = nameOfFunction[0];
+        obj[1] = +firstNumElem.value;
+        obj[2] = +secondNumElem.value;
+        outputResult(newFunc(obj),resultElem);
     }
 
     return{
@@ -149,8 +144,6 @@ var calculator =(function() {
     }
 
     function init() {
-        // debugger;
-        // var cacheFunction ={};
         add = makeCachingValue(add, cacheValue);
         minus = makeCachingValue(minus,cacheValue);
         composition = makeCachingValue(composition,cacheValue);
