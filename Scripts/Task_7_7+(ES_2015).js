@@ -2,6 +2,18 @@
 
 var calculator =(function() {
 
+    var OPERATIONPLUS = "plus";
+    var OPERATIONMINUS = "minus";
+    var OPERATIONCOMPOSITION = "composition";
+    var OPERATIONDIVISION = "division";
+    var OPERATIONEXPONATION = "exponentiation";
+
+    var NAMEFANCTIONADD = "add";
+    var NAMEFACTIONMINUS = "minus";
+    var NAMEFANCTIONCOMPOSITION = "composition";
+    var NAMEFANCTIONDIVISION = "division";
+    var NAMEFANCTIONEXPONATION = "exponentiation";
+
     var cacheValue = {};
 
     var cacheFunction ={};
@@ -37,24 +49,24 @@ var calculator =(function() {
         var obj ={};
         obj[1] = +firstNumElem.value;
         obj[2] =+secondNumElem.value;
-        if(selectValue == "plus") {
-            obj[0]="add"
+        if(selectValue == OPERATIONPLUS) {
+            obj[0]= NAMEFANCTIONADD;
             outputResult(add(obj),resultElem);
         }
-        if(selectValue =="minus"){
-            obj[0] ="minus";
+        if(selectValue == OPERATIONMINUS){
+            obj[0] =NAMEFACTIONMINUS;
             outputResult(minus(obj),resultElem);
         }
-        if(selectValue ==="composition") {
-            obj[0] ="composition";
+        if(selectValue == OPERATIONCOMPOSITION) {
+            obj[0] =NAMEFANCTIONCOMPOSITION;
             outputResult(composition(obj),resultElem);
         }
-        if(selectValue =="division") {
-            obj[0] ="division";
+        if(selectValue == OPERATIONDIVISION) {
+            obj[0] =NAMEFANCTIONDIVISION;
             outputResult(division(obj),resultElem);
         }
-        if(selectValue =="exponentiation") {
-            obj[0] ="exponentiation";
+        if(selectValue == OPERATIONEXPONATION) {
+            obj[0] =NAMEFANCTIONEXPONATION;
             outputResult(exponentiation(obj),resultElem);
         }
     }
@@ -88,10 +100,10 @@ var calculator =(function() {
         this.cacheValue = cache;
 
         return function (obj){
-            if(!((obj[0]+obj[1]+obj[2] in this.cacheValue) || (obj[0]+obj[2]+obj[1] in this.cacheValue) && obj[0]=="exponentiation")){
+            if(!((obj[0]+obj[1]+obj[2] in this.cacheValue) || (obj[0]+obj[2]+obj[1] in this.cacheValue) && obj[0]== NAMEFANCTIONEXPONATION)){
                 this.cacheValue[obj[0]+obj[1]+obj[2]] = f.call(this,obj);
             }
-            if(obj[0] == "exponentiation"){
+            if(obj[0] == NAMEFANCTIONEXPONATION){
                 if(!(obj[0]+obj[1]+obj[2] in this.cacheValue)){
                     this.cacheValue[obj[0]+obj[1]+obj[2]] = f.call(this,obj);
                 }

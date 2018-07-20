@@ -44,6 +44,12 @@ var errorControl = (function () {
 
 //#region Point_1
 var objSearchElemMas = (function() {
+
+    var SELECTSUMELEM = "sumOfElemMasIsMax_O(n)";
+    var SELECTSUMELEM_2 ="sumOfElemMasIsMax_O(n^2)";
+    var SELECTSERCELEM = "searchMaxMinMediumElemMas";
+    var SELECTSEQUANCEMAS = "ascendingSequenceMas";
+
     var getMaxSubSumOn = function (arr) {
         var outArr= [], sum = 0, maxSum = 0;
         for (var r = 0; r < arr.length; ++r) {
@@ -119,19 +125,19 @@ var objSearchElemMas = (function() {
         }
         var initialMas  = initialMasElem.value.split(' ').map(x => +x);
         var outputMas = [];
-        if (selectValue == "sumOfElemMasIsMax_O(n)") {
+        if (selectValue == SELECTSUMELEM) {
             outputMas = getMaxSubSumOn(initialMas, "Sum");
             outputMasToInputElem(outputMas, "Sum",resultElem);
         }
-        if (selectValue == "sumOfElemMasIsMax_O(n^2)") {
+        if (selectValue == SELECTSUMELEM_2) {
             outputMas = getMaxSubSumSquareOn_2(initialMas);
             outputMasToInputElem(outputMas, "Sum",resultElem);
         }
-        if (selectValue == "searchMaxMinMediumElemMas") {
+        if (selectValue == SELECTSERCELEM) {
             outputMas = searchMaxMinMediumElemMas(initialMas);
             outputMasToInputElem(outputMas, "Min, max, medium",resultElem);
         }
-        if (selectValue == "ascendingSequenceMas") {
+        if (selectValue == SELECTSEQUANCEMAS) {
             outputMas = searchAscendingSequenceMas(initialMas);
             outputMasToInputElem(outputMas, "Ascending Sequence",resultElem);
         }
@@ -152,60 +158,78 @@ var objSearchElemMas = (function() {
 //#region Point_2
 var dateFormatter = (function(){
 
+    var PARSETOSIMPLESTR = "simpleStr";
+    var PARSETOSTRMONTH = "simpleStrMonthToStr";
+    var PARSETODATEOBJECT = "simpleStrToDateObject";
+    var PARSETODATEOBJECTHYPHENATED = "simpleStrToDateObjectHyphenated";
+    var FROMNOW = "fromNow";
+    var MSTODATE = "MStoDate";
+    var DATETOMS = "DateToMS";
+
     var selectParseTemplate = function (initialDateElem, selectValue) {
-        if (selectValue == "simpleStr") {
-            outputDate(parseFunctionReturnStr("DDMMYYYY", "YY-MM-DD",initialDateElem),initialDateElem);
+        if (selectValue == PARSETOSIMPLESTR) {
+            outputDate(parseFunctionReturnStr(SELECTFORMAT_1, "YY-MM-DD",initialDateElem),initialDateElem);
         }
-        if (selectValue == "simpleStrMonthToStr") {
-            outputDate(parseFunctionReturnStr("DDMMYYYY", "YYYYMMDD", initialDateElem),initialDateElem);
+        if (selectValue == PARSETOSTRMONTH) {
+            outputDate(parseFunctionReturnStr(SELECTFORMAT_1, SELECTFORMAT_2, initialDateElem),initialDateElem);
         }
-        if (selectValue == "simpleStrToDateObject") {
-            outputDate(parseFunctionReturnStr("YYYYMMDD", "YYYYMMDD",initialDateElem),initialDateElem);
+        if (selectValue == PARSETODATEOBJECT) {
+            outputDate(parseFunctionReturnStr(SELECTFORMAT_2, SELECTFORMAT_2,initialDateElem),initialDateElem);
         }
-        if (selectValue == "simpleStrToDateObjectHyphenated") {
-            outputDate(parseFunctionReturnStr("YYYYMMDD", "YYYYMMDD",initialDateElem, "MM-DD-YYYY"),initialDateElem);
+        if (selectValue == PARSETODATEOBJECTHYPHENATED) {
+            outputDate(parseFunctionReturnStr(SELECTFORMAT_2, SELECTFORMAT_2,initialDateElem, SELECTFORMAT_4),initialDateElem);
         }
-        if (selectValue == "fromNow") {
-            outputDate(parseFunctionReturnStr("YYYY-MM-DD", "YYYY-MM-DD",initialDateElem),initialDateElem);
+        if (selectValue == FROMNOW) {
+            outputDate(parseFunctionReturnStr(SELECTFORMAT_3,  SELECTFORMAT_3,initialDateElem),initialDateElem);
         }
-        if (selectValue == "MStoDate") {
-            outputDate(parseFunctionReturnStr("MS","",initialDateElem),initialDateElem);
+        if (selectValue == MSTODATE) {
+            outputDate(parseFunctionReturnStr(SELECTFORMAT_6,"",initialDateElem),initialDateElem);
         }
-        if (selectValue == "DateToMS") {
-            outputDate(parseFunctionReturnStr("DateToMS","",initialDateElem),initialDateElem);
+        if (selectValue == DATETOMS) {
+            outputDate(parseFunctionReturnStr(SELECTFORMAT_7,"",initialDateElem),initialDateElem);
         }
     }
+
+    var SELECTFORMAT_1 = "DDMMYYYY";
+    var SELECTFORMAT_2 = "YYYYMMDD";
+    var SELECTFORMAT_3 = "YYYY-MM-DD";
+    var SELECTFORMAT_4 = "MM-DD-YYYY";
+    var SELECTFORMAT_5 = "MM-DD-YYYY";
+    var SELECTFORMAT_6 = "MS";
+    var SELECTFORMAT_7 = "DateToMS";
+
 
     var parseFunctionReturnStr = function (inputStrFormat, regExp,initialDateElem, regExp_2) {
         var date ,masValueForBuildDate = [];
         var locale = "en-us";
-        if (inputStrFormat == "DDMMYYYY" && regExp == "YY-MM-DD" && typeof regExp_2 == "undefined") {
+        if (inputStrFormat == SELECTFORMAT_1 && regExp == "YY-MM-DD" && typeof regExp_2 == "undefined") {
+            debugger;
             return initialDateElem.value.replace(/([0-9]{2})([0-9]{2})([0-9]{4})/, '$1-$2-$3');
         }
-        if (inputStrFormat == "DDMMYYYY" && regExp == "YYYYMMDD" && typeof regExp_2 == "undefined") {
+        if (inputStrFormat == SELECTFORMAT_1 && regExp == SELECTFORMAT_2 && typeof regExp_2 == "undefined") {
             masValueForBuildDate = initialDateElem.value.replace(/([0-9]{2})([0-9]{2})([0-9]{4})/, '$1,$2,$3').split(',').map(x => +x);
             date = new Date(masValueForBuildDate[2], masValueForBuildDate[1] - 1, masValueForBuildDate[0]);
             return date.getDate() + " " + date.toLocaleString(locale, {month: "long"}) + " " + date.getFullYear();
         }
-        if (inputStrFormat == "YYYYMMDD" && regExp == "YYYYMMDD" && typeof regExp_2 == "undefined") {
+        if (inputStrFormat == SELECTFORMAT_2 && regExp == SELECTFORMAT_2 && typeof regExp_2 == "undefined") {
             masValueForBuildDate = initialDateElem.value.replace(/([0-9]{4})([0-9]{2})([0-9]{2})/, '$1,$2,$3').split(',').map(x => +x);
             date = new Date(masValueForBuildDate[0], masValueForBuildDate[1] - 1, masValueForBuildDate[2]);
             return date.getDate() + " " + date.toLocaleString(locale, {month: "long"}) + " " + date.getFullYear();
         }
-        if (inputStrFormat == "YYYYMMDD" && regExp == "YYYYMMDD" && regExp_2 == "MM-DD-YYYY") {
+        if (inputStrFormat == SELECTFORMAT_2 && regExp == SELECTFORMAT_2 && regExp_2 == SELECTFORMAT_5) {
             return initialDateElem.value.replace(/([0-9]{4})([0-9]{2})([0-9]{2})/, '$2-$3-$1');
         }
-        if (inputStrFormat == "YYYY-MM-DD" && regExp == "YYYY-MM-DD" && typeof regExp_2 == "undefined") {
+        if (inputStrFormat == SELECTFORMAT_3 && regExp == SELECTFORMAT_3 && typeof regExp_2 == "undefined") {
             masValueForBuildDate = initialDateElem.value.replace(/([0-9]{4})-([0-9]{2})-([0-9]{2})/, '$1,$2,$3').split(',').map(x => +x);
             var b = new Date(masValueForBuildDate[0], masValueForBuildDate[1] - 1, masValueForBuildDate[2]).getTime();
             var diff = Math.floor(Date.now() - b);
             return Math.floor(diff / (1000 * 60 * 60 * 24) / 31 / 12) + " years ago";
         }
-        if (inputStrFormat == "MS") {
+        if (inputStrFormat == SELECTFORMAT_6) {
             date = new Date(+initialDateElem.value);
             return date;
         }
-        if (inputStrFormat == "DateToMS") {
+        if (inputStrFormat == SELECTFORMAT_7) {
             masValueForBuildDate = initialDateElem.value.replace(/([0-9]{4})-([0-9]{2})-([0-9]{2})/, '$1,$2,$3').split(',').map(x => +x);
             date = new Date(masValueForBuildDate[0], masValueForBuildDate[1] - 1, masValueForBuildDate[2]).getTime();
             return date;
@@ -227,6 +251,11 @@ var dateFormatter = (function(){
 //#region Point_3
 var textFormatter = (function() {
 
+    var SELECTTEXTFORMATCHARWRAP = "charWrap";
+    var SELECTTEXTFORMATWORDWRAP = "wordWrap";
+    var SELECTTEXTFORMATSENTENCEWRAP = "sentenceWrap";
+    var WITHOUTWRAP = "withoutWrap";
+
     var changeTextFormatter = function (inputTextElem, countRowsElem, countCharInStrElem,selectValue,errorRows,errorColumn,resultText) {
         if(!errorControl.checkValue(countRowsElem,errorRows,true,countCharInStrElem, errorColumn)){
             return false;
@@ -235,16 +264,16 @@ var textFormatter = (function() {
             errorColumn.setAttribute('style','display:none');
         }
         var str;
-        if (selectValue == "charWrap") {
+        if (selectValue == SELECTTEXTFORMATCHARWRAP) {
             str = outputText(inputTextElem.value.match(/(\w{1})/g).join('\n'),resultText);
         }
-        if (selectValue == "wordWrap") {
+        if (selectValue == SELECTTEXTFORMATWORDWRAP) {
             str = outputText(inputTextElem.value.replace(/\s/g, "\n"),resultText)
         }
-        if (selectValue == "sentenceWrap") {
+        if (selectValue == SELECTTEXTFORMATSENTENCEWRAP) {
             str = outputText(inputTextElem.value.match(/(\w+.)/g).join('\n'),resultText);
         }
-        if (selectValue == "withoutWrap") {
+        if (selectValue == WITHOUTWRAP) {
             resultText.setAttribute('wrap', 'off');
         }
         if (countRowsElem.value != undefined && countRowsElem.value != "") {
@@ -282,21 +311,27 @@ var textFormatter = (function() {
 //#region Point_4
 var calculator =(function(){
 
+    var OPERATIONPLUS = "plus";
+    var OPERATIONMINUS = "minus";
+    var OPERATIONCOMPOSITION = "composition";
+    var OPERATIONDIVISION = "division";
+    var OPERATIONEXPONATION = "exponentiation";
+
     var selectOperation = function (firstNumElem,secondNumElem,selectValue,resultElem,errorFirstNum,errorSecondNum) {
         if(!errorControl.checkValue(firstNumElem,errorFirstNum,true,secondNumElem,errorSecondNum)){
             return false;
         }
         firstNumElem =+firstNumElem.value;
         secondNumElem =+secondNumElem.value;
-        if(selectValue == "plus")
+        if(selectValue == OPERATIONPLUS)
             outputResult(add(firstNumElem, secondNumElem),resultElem);
-        if(selectValue =="minus")
+        if(selectValue == OPERATIONMINUS)
             outputResult(minus(firstNumElem, secondNumElem),resultElem);
-        if(selectValue =="composition")
+        if(selectValue == OPERATIONCOMPOSITION)
             outputResult(composition(firstNumElem, secondNumElem),resultElem);
-        if(selectValue =="division")
+        if(selectValue == OPERATIONDIVISION)
             outputResult(division(firstNumElem, secondNumElem),resultElem);
-        if(selectValue =="exponentiation")
+        if(selectValue == OPERATIONEXPONATION)
             outputResult(exponentiation(firstNumElem, secondNumElem),resultElem);
     }
 
@@ -333,6 +368,11 @@ var calculator =(function(){
 
 //#region Point_5
 var objSortMas = (function(){
+
+    var SELECTQUICKSORT = "quickSort";
+    var SELECTINSERTSORT = "insertSort";
+    var SELECTSELECTIONSORT = "selectionSort";
+    var BUBBLESORT = "bubbleSort";
 
     var insertionSort = function (arr) {
 
@@ -404,16 +444,16 @@ var objSortMas = (function(){
         var sortMas;
 
         if(initialMas !=undefined) {
-            if (selectValue == "quickSort") {
+            if (selectValue == SELECTQUICKSORT) {
                 sortMas = quickSort(initialMas);
             }
-            if (selectValue == "insertSort") {
+            if (selectValue == SELECTINSERTSORT) {
                 sortMas = insertionSort(initialMas);
             }
-            if (selectValue == "selectionSort") {
+            if (selectValue == SELECTSELECTIONSORT) {
                 sortMas = selectionSort(initialMas);
             }
-            if (selectValue == "bubbleSort") {
+            if (selectValue == BUBBLESORT) {
                 sortMas = bubbleSort(initialMas);
             }
             outputSortMas(sortMas,resultMasSort);
@@ -428,7 +468,8 @@ var objSortMas = (function(){
     }
 
     return{
-        selectFunctionSort: selectFunctionSort
+        selectFunctionSort: selectFunctionSort,
+        quickSort:quickSort
     }
 }());
 
@@ -438,37 +479,54 @@ var objSortMas = (function(){
 
 var binaryOperations = (function() {
 
+    var SELECTCONVERTTOBIN = "convertToBin";
+    var SELECTCONVERTTODESC = "convertToDesc";
+
     var convertToBin = function (num) {
-        var out = [], bit = 1;
-        while (num >= bit) {
-            if(num>0)
-                out.push(num & bit ? 1 : 0);
-            else
-                out.push(~(num & bit ? 1 : 0));
-            bit <<= 1;
+        try {
+            if(typeof  num  == "undefined")
+                throw TypeError("Argument don't should be undefined");
+            var out = [], bit = 1;
+            while (num >= bit) {
+                if (num > 0)
+                    out.push(num & bit ? 1 : 0);
+                else
+                    out.push(~(num & bit ? 1 : 0));
+                bit <<= 1;
+            }
+            return out;
         }
-        return out;
+        catch (e) {
+            alert(e.message );
+        }
     }
 
     var convertToDec = function (num) {
-        var out =0,  bit = 1;
-        for(var i=0;i<num.length;i++){
-            out+=num[i] == "1" ? bit :0;
-            bit<<=1;
+        try {
+            if (typeof  num == "undefined")
+                throw TypeError("Argument don't should be undefined");
+            var out = 0, bit = 1;
+            for (var i = 0; i < num.length; i++) {
+                out += num[i] == "1" ? bit : 0;
+                bit <<= 1;
+            }
+            var masValue = [];
+            masValue[0] = out;
+            return masValue;
         }
-        var masValue = [];
-        masValue[0] = out;
-        return masValue;
+        catch (e) {
+            alert(e.message );
+        }
     }
 
     var selectOperation = function (numElem,selectValue,errorNumToConvert,resultConvert) {
         if(!errorControl.checkValue(numElem,errorNumToConvert,false)){
             return false;
         }
-        if(selectValue =="convertToBin"){
+        if(selectValue == SELECTCONVERTTOBIN){
             outputMas(convertToBin(numElem.value),resultConvert);
         }
-        if(selectValue == "convertToDesc"){
+        if(selectValue == SELECTCONVERTTODESC){
             outputMas(convertToDec(numElem.value),resultConvert);
         }
     }

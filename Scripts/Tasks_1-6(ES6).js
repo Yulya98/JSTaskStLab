@@ -1,11 +1,50 @@
 
 "use strict";
 
+const SELECTSUMELEM = "sumOfElemMasIsMax_O(n)";
+const SELECTSUMELEM_2 ="sumOfElemMasIsMax_O(n^2)";
+const SELECTSERCELEM = "searchMaxMinMediumElemMas";
+const SELECTSEQUANCEMAS = "ascendingSequenceMas";
+
+const PARSETOSIMPLESTR = "simpleStr";
+const PARSETOSTRMONTH = "simpleStrMonthToStr";
+const PARSETODATEOBJECT = "simpleStrToDateObject";
+const PARSETODATEOBJECTHYPHENATED = "simpleStrToDateObjectHyphenated";
+const FROMNOW = "fromNow";
+const MSTODATE = "MStoDate";
+const DATETOMS = "DateToMS";
+
+const SELECTFORMAT_1 = "DDMMYYYY";
+const SELECTFORMAT_2 = "YYYYMMDD";
+const SELECTFORMAT_3 = "YYYY-MM-DD";
+const SELECTFORMAT_4 = "MM-DD-YYYY";
+const SELECTFORMAT_5 = "MM-DD-YYYY";
+const SELECTFORMAT_6 = "MS";
+const SELECTFORMAT_7 = "DateToMS";
+
+const SELECTTEXTFORMATCHARWRAP = "charWrap";
+const SELECTTEXTFORMATWORDWRAP = "wordWrap";
+const SELECTTEXTFORMATSENTENCEWRAP = "sentenceWrap";
+const WITHOUTWRAP = "withoutWrap";
+
+const OPERATIONPLUS = "plus";
+const OPERATIONMINUS = "minus";
+const OPERATIONCOMPOSITION = "composition";
+const OPERATIONDIVISION = "division";
+const OPERATIONEXPONATION = "exponentiation";
+
+const SELECTQUICKSORT = "quickSort";
+const SELECTINSERTSORT = "insertSort";
+const SELECTSELECTIONSORT = "selectionSort";
+const BUBBLESORT = "bubbleSort";
+
+const SELECTCONVERTTOBIN = "convertToBin";
+const SELECTCONVERTTODESC = "convertToDesc";
+
 class ControlValue{
 
     static checkValue(firstNum,errorFirstNumElem,flagCountValue,secondNum,errorSecondNumElem) {
         if(flagCountValue == true){
-            debugger;
             if(!firstNum.value.match(/^\d+$/)){
                 errorFirstNumElem.innerHTML = "Incorrect data: ";
                 errorFirstNumElem.setAttribute('style','display:inline');
@@ -84,7 +123,7 @@ class SearchElemMas {
 
     static searchMaxMinMediumElemMas (arr) {
         let masMinMaxMediumElemMas = [], minEl,maxEl,mediumEl;
-        arr = objSortMas.quickSort(arr);
+        arr = new SortMas().quickSort(arr);
         minEl = arr[0];
         maxEl = arr[arr.length-1];
         if(arr.length%2 ==0){
@@ -139,19 +178,19 @@ class SearchElemMas {
         // }
         let masFromArr = this.arrElem.value.split(' ').map(x => +x);
         let outputMas = [];
-        if (this.selectValue == "sumOfElemMasIsMax_O(n)") {
+        if (this.selectValue == SELECTSUMELEM) {
             outputMas = SearchElemMas.getMaxSubSumOn(masFromArr, "Sum");
             this.outputMas(outputMas, "Sum");
         }
-        if (this.selectValue == "sumOfElemMasIsMax_O(n^2)") {
+        if (this.selectValue == SELECTSUMELEM_2) {
             outputMas = SearchElemMas.getMaxSubSumSquareOn_2(masFromArr);
             this.outputMas(outputMas, "Sum");
         }
-        if (this.selectValue == "searchMaxMinMediumElemMas") {
+        if (this.selectValue == SELECTSERCELEM) {
             outputMas = SearchElemMas.searchMaxMinMediumElemMas(masFromArr);
             this.outputMas(outputMas, "Min, max, medium");
         }
-        if (this.selectValue == "ascendingSequenceMas") {
+        if (this.selectValue == SELECTSEQUANCEMAS) {
             outputMas = SearchElemMas.searchAscendingSequenceMas(masFromArr);
             this.outputMas(outputMas, "Ascending Sequence");
         }
@@ -171,64 +210,63 @@ class DateFormatter {
 
     constructor(initialDateElem,selectValue){
         this.initialDateElem = initialDateElem;
-        this.selectValue = selectValue; //временно
-        // this.formatDate =formatDate; //для того чтобы потом пофиксить магические строки
+        this.selectValue = selectValue;
     }
 
     selectParseTemplate() {
-        if (this.selectValue == "simpleStr") {
-            this.outputDate(this.parseFunctionReturnStr("DDMMYYYY", "YY-MM-DD"));
+        if (this.selectValue == PARSETOSIMPLESTR) {
+            this.outputDate(this.parseFunctionReturnStr(SELECTFORMAT_1, "YY-MM-DD"));
         }
-        if (this.selectValue == "simpleStrMonthToStr") {
-            this.outputDate(this.parseFunctionReturnStr("DDMMYYYY", "YYYYMMDD"));
+        if (this.selectValue == PARSETOSTRMONTH) {
+            this.outputDate(this.parseFunctionReturnStr(SELECTFORMAT_1, SELECTFORMAT_2));
         }
-        if (this.selectValue == "simpleStrToDateObject") {
-            this.outputDate(this.parseFunctionReturnStr("YYYYMMDD", "YYYYMMDD"));
+        if (this.selectValue == PARSETODATEOBJECT) {
+            this.outputDate(this.parseFunctionReturnStr(SELECTFORMAT_2, SELECTFORMAT_2));
         }
-        if (this.selectValue == "simpleStrToDateObjectHyphenated") {
-            this.outputDate(this.parseFunctionReturnStr("YYYYMMDD", "YYYYMMDD", "MM-DD-YYYY"));
+        if (this.selectValue == PARSETODATEOBJECTHYPHENATED) {
+            this.outputDate(this.parseFunctionReturnStr(SELECTFORMAT_2, SELECTFORMAT_2, SELECTFORMAT_4));
         }
-        if (this.selectValue == "fromNow") {
-            this.outputDate(this.parseFunctionReturnStr("YYYY-MM-DD", "YYYY-MM-DD"));
+        if (this.selectValue == FROMNOW) {
+            this.outputDate(this.parseFunctionReturnStr(SELECTFORMAT_3,  SELECTFORMAT_3));
         }
-        if (this.selectValue == "MStoDate") {
-            this.outputDate(this.parseFunctionReturnStr("MS"));
+        if (this.selectValue == MSTODATE) {
+            this.outputDate(this.parseFunctionReturnStr(SELECTFORMAT_6));
         }
-        if (this.selectValue == "DateToMS") {
-            this.outputDate(this.parseFunctionReturnStr("DateToMS"));
+        if (this.selectValue == DATETOMS) {
+            this.outputDate(this.parseFunctionReturnStr(SELECTFORMAT_7));
         }
     }
 
     parseFunctionReturnStr(inputStr, regExp, regExp_2) {
         let date, masValueForBuildDate = [];
         const locale = "en-us";
-        if (inputStr == "DDMMYYYY" && regExp == "YY-MM-DD" && typeof regExp_2 == "undefined") {
+        if (inputStr == SELECTFORMAT_1 && regExp == "YY-MM-DD" && typeof regExp_2 == "undefined") {
             return this.initialDateElem.value.replace(/([0-9]{2})([0-9]{2})([0-9]{4})/, '$1-$2-$3');
         }
-        if (inputStr == "DDMMYYYY" && regExp == "YYYYMMDD" && typeof regExp_2 == "undefined") {
+        if (inputStr == SELECTFORMAT_1 && regExp == SELECTFORMAT_2 && typeof regExp_2 == "undefined") {
             masValueForBuildDate = this.initialDateElem.value.replace(/([0-9]{2})([0-9]{2})([0-9]{4})/, '$1,$2,$3').split(',').map(x => +x);
             date = new Date(masValueForBuildDate[2], masValueForBuildDate[1] - 1, masValueForBuildDate[0]);
             return date.getDate() + " " + date.toLocaleString(locale, {month: "long"}) + " " + date.getFullYear();
         }
-        if (inputStr == "YYYYMMDD" && regExp == "YYYYMMDD" && typeof regExp_2 == "undefined") {
+        if (inputStr == SELECTFORMAT_2 && regExp == SELECTFORMAT_2 && typeof regExp_2 == "undefined") {
             masValueForBuildDate = this.initialDateElem.value.replace(/([0-9]{4})([0-9]{2})([0-9]{2})/, '$1,$2,$3').split(',').map(x => +x);
             date = new Date(masValueForBuildDate[0], masValueForBuildDate[1] - 1, masValueForBuildDate[2]);
             return date.getDate() + " " + date.toLocaleString(locale, {month: "long"}) + " " + date.getFullYear();
         }
-        if (inputStr == "YYYYMMDD" && regExp == "YYYYMMDD" && regExp_2 == "MM-DD-YYYY") {
+        if (inputStr == SELECTFORMAT_2 && regExp == SELECTFORMAT_2 && regExp_2 == SELECTFORMAT_5) {
             return this.initialDateElem.value.replace(/([0-9]{4})([0-9]{2})([0-9]{2})/, '$2-$3-$1');
         }
-        if (inputStr == "YYYY-MM-DD" && regExp == "YYYY-MM-DD" && typeof regExp_2 == "undefined") {
+        if (inputStr == SELECTFORMAT_3 && regExp == SELECTFORMAT_3 && typeof regExp_2 == "undefined") {
             masValueForBuildDate = this.initialDateElem.value.replace(/([0-9]{4})-([0-9]{2})-([0-9]{2})/, '$1,$2,$3').split(',').map(x => +x);
             let initialDate = new Date(masValueForBuildDate[0], masValueForBuildDate[1] - 1, masValueForBuildDate[2]).getTime();
             let diff = Math.floor(Date.now() - initialDate);
             return Math.floor(diff / (1000 * 60 * 60 * 24) / 31 / 12) + " years ago";
         }
-        if (inputStr == "MS") {
+        if (inputStr == SELECTFORMAT_6) {
             date = new Date(+this.initialDateElem.value);
             return date;
         }
-        if (inputStr == "DateToMS") {
+        if (inputStr == SELECTFORMAT_7) {
             masValueForBuildDate = this.initialDateElem.value.replace(/([0-9]{4})-([0-9]{2})-([0-9]{2})/, '$1,$2,$3').split(',').map(x => +x);
             date = new Date(masValueForBuildDate[0], masValueForBuildDate[1] - 1, masValueForBuildDate[2]).getTime();
             return date;
@@ -261,16 +299,16 @@ class TextFormatter{
         if(!ControlValue.checkValue(this.maxRows,this.errorRowsCount,true,this.maxColumns,this.errorColumnsCount)){
             return false;
         }
-        if(this.selectValue =="charWrap"){
+        if(this.selectValue == SELECTTEXTFORMATCHARWRAP){
             this.text.value = this.outputText(this.text.value.match(/(\w{1})/g).join('\n'));
         }
-        if(this.selectValue =="wordWrap"){
+        if(this.selectValue ==SELECTTEXTFORMATWORDWRAP){
             this.text.value = this.outputText(this.text.value.replace(/\s/g, "\n"))
         }
-        if(this.selectValue == "sentenceWrap"){
+        if(this.selectValue == SELECTTEXTFORMATSENTENCEWRAP){
             this.text.value = this.outputText(this.text.value.match(/(\w+.)/g).join('\n'));
         }
-        if(this.selectValue == "withoutWrap"){
+        if(this.selectValue == WITHOUTWRAP){
             this.text.setAttribute('wrap','off');
         }
         let str;
@@ -308,28 +346,17 @@ class Calculator  {
         if(!ControlValue.checkValue(a,errorFirstNum,true,b,errorSecondNum)){
             return false;
         }
-        // if(!a.match(/^\d+$/)){
-        //     a = "Incorrect data";
-        //     if(!b.match(/^\d+$/)) {
-        //         b = "Incorrect data";
-        //     }
-        //     return false;
-        // }
-        // if(!b.match(/^\d+$/)){
-        //     b = "Incorrect data";
-        //     return false;
-        // }
         a=+a.value;
         b=+b.value;
-        if(selectValue == "plus")
+        if(selectValue == OPERATIONPLUS)
             Calculator.outputResult(Calculator.add(a, b),resultElem);
-        if(selectValue =="minus")
+        if(selectValue == OPERATIONMINUS)
             Calculator.outputResult(Calculator.minus(a, b),resultElem)
-        if(selectValue =="composition")
+        if(selectValue == OPERATIONCOMPOSITION)
             Calculator.outputResult(Calculator.composition(a, b),resultElem);
-        if(selectValue =="division")
+        if(selectValue == OPERATIONDIVISION)
             Calculator.outputResult(Calculator.division(a, b),resultElem);
-        if(selectValue =="exponentiation")
+        if(selectValue == OPERATIONEXPONATION)
             Calculator.outputResult(Calculator.exponentiation(a, b),resultElem);
     }
 
@@ -435,22 +462,18 @@ class SortMas  {
             return false;
         }
 
-        // if(!this.arr.value.match(/[0-9\s]+/)) {
-        //     this.arr = "Incorrect Data";
-        //     return false;
-        // }
         let initialMas = this.arr.value.split(' ').map(x=>+x),sortMas;
         if(initialMas !=undefined) {
-            if (this.selectValue == "quickSort") {
+            if (this.selectValue == SELECTQUICKSORT) {
                 sortMas = this.quickSort(initialMas);
             }
-            if (this.selectValue == "insertSort") {
+            if (this.selectValue == SELECTINSERTSORT) {
                 sortMas =  this.insertionSort(initialMas);
             }
-            if (this.selectValue == "selectionSort") {
+            if (this.selectValue == SELECTSELECTIONSORT) {
                 sortMas = this.selectionSort(initialMas);
             }
-            if (this.selectValue == "bubbleSort") {
+            if (this.selectValue == BUBBLESORT) {
                 sortMas = this.bubbleSort(initialMas);
             }
             this.outputSortMas(sortMas);
@@ -471,11 +494,11 @@ class SortMas  {
 
 class BinaryOperations {
 
-    constructor(num, selectValue,errorElem,resulElem){
+    constructor(num, selectValue,errorElem,resultElem){
         this.num = num;
         this.selectValue = selectValue;
         this.errorElem = errorElem;
-        this.resulElem = resulElem;
+        this.resultElem = resultElem;
     }
 
     convertToBin(num) {
@@ -505,22 +528,18 @@ class BinaryOperations {
         if(!ControlValue.checkValue(this.num,this.errorElem,false)){
             return false;
         }
-        // if(!this.num.value.match(/^\d+$/)){
-        //     this.num.value = "Incorrect data";
-        //     return false;
-        // }
-        if(this.selectValue =="convertToBin"){
+        if(this.selectValue == SELECTCONVERTTOBIN){
             this.outputMas(this.convertToBin(this.num.value));
         }
-        if(this.selectValue == "convertToDesc"){
+        if(this.selectValue == SELECTCONVERTTODESC){
             this.outputMas(this.convertToDec(this.num.value));
         }
     }
 
     outputMas(arr) {
-        this.num.value = "";
+        this.resultElem.value = "";
         for(let value of arr)
-            this.num.value += value;
+            this.resultElem.value += value;
     }
 }
 
